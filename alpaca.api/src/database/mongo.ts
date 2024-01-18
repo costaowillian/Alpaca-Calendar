@@ -8,7 +8,7 @@ export const MongoClient = {
     const url = process.env.MONGODB_URL ?? "";
 
     const client = new Mongo(url);
-    const db = client.db("users-db");
+    const db = client.db("alpacaCalendar");
 
     this.client = client;
     this.db = db;
