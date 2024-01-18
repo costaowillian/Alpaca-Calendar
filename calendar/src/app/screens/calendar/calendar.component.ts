@@ -80,21 +80,23 @@ export class CalendarComponent {
     resutl$.asObservable().subscribe((form: FormGroup) => {
       const start = this.formatDate(
         selectInfo.startStr,
-        form.value.horaInicio,
+        form.value.start,
         false
       );
       const end = this.formatDate(
         selectInfo.endStr,
-        form.value.horaTermino,
+        form.value.end,
         selectInfo.allDay
       );
-      const title = form.value.descricao;
+      const title = form.value.description;
+      const color = form.value.color;
       calendarApi.addEvent({
         id: createEventId(),
         title,
         start: start,
         end: end,
         allDay: false,
+        backgroundColor: color,
       });
     });
   }
@@ -103,19 +105,19 @@ export class CalendarComponent {
     if (isAllDay) {
       let [year, mouth, day] = date.split('-');
       day = String(parseInt(day, 10) - 1);
-      const novaData = `${year}-${String(mouth).padStart(2, '0')}-${String(
+      const newDate = `${year}-${String(mouth).padStart(2, '0')}-${String(
         day
       ).padStart(2, '0')}T${newHour}:00-03:00`;
 
-      return novaData;
+      return newDate;
     }
 
     const [year, mouth, day] = date.split('-');
-    const novaData = `${year}-${String(mouth).padStart(2, '0')}-${String(
+    const newDate = `${year}-${String(mouth).padStart(2, '0')}-${String(
       day
     ).padStart(2, '0')}T${newHour}:00-03:00`;
 
-    return novaData;
+    return newDate;
   }
 
   // handleEventClick(clickInfo: EventClickArg) {

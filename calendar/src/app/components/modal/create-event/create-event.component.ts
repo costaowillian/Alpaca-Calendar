@@ -10,10 +10,17 @@ import { Subject } from 'rxjs';
 })
 export class CreateEventComponent {
   hasError: string;
+  selectedColor: string = '';
+  eventTypes: { label: string; color: string }[] = [
+    { label: 'Reunião', color: '#2A84FF' },
+    { label: 'Evento social', color: '#727EEE' },
+    { label: 'Outros', color: '#FFC267' },
+  ];
   eventoForm = this.fb.group({
-    descricao: ['', [Validators.required]],
-    horaInicio: ['', [Validators.required]],
-    horaTermino: ['', [Validators.required]],
+    description: ['', [Validators.required]],
+    start: ['', [Validators.required]],
+    end: ['', [Validators.required]],
+    color: [''],
   });
 
   createResult!: Subject<FormGroup>;

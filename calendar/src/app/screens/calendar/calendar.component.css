@@ -28,8 +28,8 @@ b {
 .demo-app-sidebar {
   width: 300px;
   line-height: 1.5;
-  background: #eaf9ff;
-  border-right: 1px solid #d3e2e8;
+  background: var(--secondary);
+  border-right: 1px solid var(--secondary);
 }
 
 .demo-app-sidebar-section {
