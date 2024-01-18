@@ -1,0 +1,50 @@
+<div class="modal-content">
+  <div class="modal-header">
+    <h5 class="modal-title">Adicionar um novo evento</h5>
+    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" (click)="onClose()"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="eventoForm" (ngSubmit)="onConfirm()">
+      <div class="mb-3">
+        <label for="descricao" class="col-form-label">Descrição do evento:</label>
+        <input type="text" class="form-control" id="descricao" formControlName="descricao"
+          [class.valid]="eventoForm.controls['descricao'].valid"
+          [class.invalid]="eventoForm.controls['descricao'].invalid && eventoForm.controls['descricao'].touched || eventoForm.controls['descricao'].dirty">
+        <div
+          *ngIf="eventoForm.controls['descricao'].invalid && eventoForm.controls['descricao'].touched || eventoForm.controls['descricao'].dirty">
+          <label class="error-message" *ngIf="eventoForm.controls['descricao'].hasError('required')">
+            A descrição é obrigátoria!
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="horaInicio" class="col-form-label">Hora de início:</label>
+        <input type="time" class="form-control" id="horaInicio" formControlName="horaInicio"
+          [class.valid]="eventoForm.controls['horaInicio'].valid"
+          [class.invalid]="eventoForm.controls['horaInicio'].invalid && eventoForm.controls['horaInicio'].touched || eventoForm.controls['horaInicio'].dirty">
+        <div
+          *ngIf="eventoForm.controls['horaInicio'].invalid && eventoForm.controls['horaInicio'].touched || eventoForm.controls['horaInicio'].dirty">
+          <label class="error-message" *ngIf="eventoForm.controls['horaInicio'].hasError('required')">
+            A hora de início é obrigatória.
+          </label>
+        </div>
+      </div>
+      <div class="mb-3">
+        <label for="horaTermino" class="col-form-label">Hora de término:</label>
+        <input type="time" class="form-control" id="horaTermino" formControlName="horaTermino"
+          [class.valid]="eventoForm.controls['horaTermino'].valid"
+          [class.invalid]="eventoForm.controls['horaTermino'].invalid && eventoForm.controls['horaTermino'].touched || eventoForm.controls['horaTermino'].dirty">
+        <div
+          *ngIf="eventoForm.controls['horaTermino'].invalid && eventoForm.controls['horaTermino'].touched || eventoForm.controls['horaTermino'].dirty">
+          <label class="error-message" *ngIf="eventoForm.controls['horaTermino'].hasError('required')">
+            A hora de término é obrigatória.
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClose()">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar</button>
+      </div>
+    </form>
+  </div>
+</div>
