@@ -32,7 +32,7 @@ export interface ICreateEventRepository {
 
 // Interface que define os parâmetros para a atualização de um evento
 export interface IUpdateEventParams {
-  id: string;
+  id?: string;
   description?: string;
   start?: string;
   end?: string;
@@ -54,7 +54,7 @@ export interface IGetEventRepository {
 }
 
 // Interface que define os parâmetros para pegar eventos por data
-export interface DeleteEventParams {
+export interface IDeleteEventParams {
   id: string;
 }
 
