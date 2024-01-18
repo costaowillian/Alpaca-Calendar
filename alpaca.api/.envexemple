@@ -1,0 +1,2 @@
+PORT="Port for the project"
+MONGODB_URL="Your URL from Mongo DB"
