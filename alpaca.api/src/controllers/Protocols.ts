@@ -11,7 +11,8 @@ export enum httpStatusCode {
   UNAUTHORIZED = 401,
   NOTFOUND = 404,
   SERVER_ERROR = 500,
-  CREATED = 201
+  CREATED = 201,
+  UNPROCESSABLE_ENTITY = 422
 }
 
 // Interface que define a estrutura de uma requisição HTTP genérica

@@ -1,7 +1,7 @@
-import { IGetUserRepository } from "../controllers/user/Protocols";
-import { MongoUser } from "./Protocols";
-import { IUser } from "../interfaces/User";
-import { MongoClient } from "../database/mongo";
+import { IGetUserRepository } from "../../controllers/user/Protocols";
+import { MongoUser } from "../Protocols";
+import { IUser } from "../../interfaces/User";
+import { MongoClient } from "../../database/mongo";
 import { ObjectId } from "mongodb";
 
 export class MongoGetOneUserRepository implements IGetUserRepository {

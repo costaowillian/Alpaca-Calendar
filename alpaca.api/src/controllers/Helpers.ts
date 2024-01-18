@@ -39,3 +39,11 @@ export const serverError = (code: string): HttpResponse<string> => {
     body: "something went wrong. internal code: " + code
   };
 };
+
+// Função que retorna uma resposta HTTP 422 (Unprocessable Entity) com a mensagem de erro especificada
+export const objectNotCreated = (message: string): HttpResponse<string> => {
+  return {
+    statusCode: httpStatusCode.UNPROCESSABLE_ENTITY,
+    body: message
+  };
+};

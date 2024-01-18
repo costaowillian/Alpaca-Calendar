@@ -11,7 +11,6 @@ import {
 } from "./Protocols";
 
 export class CreateUserController implements IController {
-  // Construtor recebe os repositórios necessários
   constructor(
     private readonly createUserRepository: ICreateUserRepository,
     private readonly getUserAuthRepository: IGetUsersAuthRepository

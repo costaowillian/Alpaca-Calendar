@@ -1,7 +1,8 @@
 // Interface que define a estrutura de um evento (IEvet)
-export interface IEvet {
+export interface IEvent {
+  id: string;
   description: string;
   start: string;
   end: string;
-  userId: string;
+  _userId: string;
 }

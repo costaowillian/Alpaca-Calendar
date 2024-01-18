@@ -1,7 +1,7 @@
-import { IGetUsersAuthRepository } from "../controllers/user/Protocols";
-import { MongoClient } from "../database/mongo";
-import { IUser } from "../interfaces/User";
-import { MongoUser } from "./Protocols";
+import { IGetUsersAuthRepository } from "../../controllers/user/Protocols";
+import { MongoClient } from "../../database/mongo";
+import { IUser } from "../../interfaces/User";
+import { MongoUser } from "../Protocols";
 
 export class MongoGetUserAuthRepository implements IGetUsersAuthRepository {
   async findByEmail(email: string): Promise<IUser | null> {
