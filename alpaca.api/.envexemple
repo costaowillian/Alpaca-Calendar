@@ -1,2 +1,3 @@
 PORT="Port for the project"
 MONGODB_URL="Your URL from Mongo DB"
+SECRET="Sequence of random letters and numbers"

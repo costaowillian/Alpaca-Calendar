@@ -3,11 +3,12 @@ import { MongoGetUserRepository } from "../models/Get-all-users-repository";
 import { GetUserController } from "../controllers/user/Get-all-user";
 import { MongoGetOneUserRepository } from "../models/Get-user-repository";
 import { GetOneUserController } from "../controllers/user/Get-user";
+import { checkToken } from "../middleware/checkToken";
 
 const router = express.Router();
 
 // Rota para obter todos os usuários
-router.get("/users/get-all", async (req, res) => {
+router.get("/users/get-all", checkToken, async (req, res) => {
   const mongoGetUserRepository = new MongoGetUserRepository();
   const getUserController = new GetUserController(mongoGetUserRepository);
 
@@ -16,7 +17,7 @@ router.get("/users/get-all", async (req, res) => {
 });
 
 // Rota para obter um usuário por ID
-router.get("/users/get-user/:id", async (req, res) => {
+router.get("/users/get-user/:id", checkToken, async (req, res) => {
   const mongoGetOneUserRepository = new MongoGetOneUserRepository();
   const getOneUserController = new GetOneUserController(
     mongoGetOneUserRepository
