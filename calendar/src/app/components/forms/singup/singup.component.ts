@@ -1,12 +1,14 @@
-import { Component } from '@angular/core';
+import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-singup',
   templateUrl: './singup.component.html',
-  styleUrls: ['./singup.component.css']
+  styleUrls: ['./singup.component.css'],
 })
 export class SingupComponent {
+  @Output() showLogin: EventEmitter<boolean> = new EventEmitter<boolean>();
+
   signUpForm = this.fb.group({
     nome: ['', [Validators.required]],
     sobrenome: ['', [Validators.required]],
@@ -15,4 +17,9 @@ export class SingupComponent {
   });
 
   constructor(private fb: FormBuilder) {}
+
+  // Quando o botão no componente filho for clicado emitir um evento com o valor desejado
+  handleOnClick(): void {
+    this.showLogin.emit(true);
+  }
 }

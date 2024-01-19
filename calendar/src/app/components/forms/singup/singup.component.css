@@ -1,6 +1,6 @@
-a {
+.redirect {
   text-decoration: none;
-  color: var(--primary);
+  color: var(--primary) !important;
 }
 
 .error-message {

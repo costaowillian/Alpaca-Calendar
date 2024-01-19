@@ -15,6 +15,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './components/forms/login/login.component';
 import { SingupComponent } from './components/forms/singup/singup.component';
+import { AccessPageComponent } from './screens/access-page/access-page.component';
 
 @NgModule({
   declarations: [
@@ -24,6 +25,7 @@ import { SingupComponent } from './components/forms/singup/singup.component';
     NavbarComponent,
     LoginComponent,
     SingupComponent,
+    AccessPageComponent,
   ],
   imports: [
     FormsModule,
@@ -38,6 +40,7 @@ import { SingupComponent } from './components/forms/singup/singup.component';
     TooltipModule.forRoot(),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
+    BrowserAnimationsModule
   ],
   providers: [],
   bootstrap: [AppComponent],
