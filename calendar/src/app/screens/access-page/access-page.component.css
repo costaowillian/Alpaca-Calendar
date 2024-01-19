@@ -2,6 +2,9 @@
   display: none !important;
 }
 
+.access-page {
+  background-color: var(--secondary);
+}
 @media screen and (min-width: 900px) {
   .logo {
     display: block !important;
