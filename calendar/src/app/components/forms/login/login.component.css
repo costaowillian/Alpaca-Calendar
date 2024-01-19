@@ -1,0 +1,8 @@
+a {
+  text-decoration: none;
+  color: var(--primary);
+}
+
+.error-message {
+  color: var(--red);
+}

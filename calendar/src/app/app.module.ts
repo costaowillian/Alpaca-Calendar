@@ -13,6 +13,7 @@ import { CreateEventComponent } from './components/modal/create-event/create-eve
 import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
+import { LoginComponent } from './components/forms/login/login.component';
 
 @NgModule({
   declarations: [
@@ -20,6 +21,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
     CalendarComponent,
     CreateEventComponent,
     NavbarComponent,
+    LoginComponent,
   ],
   imports: [
     FormsModule,

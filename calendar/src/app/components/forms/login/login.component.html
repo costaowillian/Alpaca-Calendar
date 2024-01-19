@@ -1,0 +1,47 @@
+<div class="card" style="width: 27rem;">
+  <div class="card-body text-center p-4">
+    <h5 class=" card-title">Login</h5>
+    <p class="card-text">Hey, adicione suas credenciais para entrar no seu calendário
+    </p>
+    <form [formGroup]="loginForm">
+      <div class="mb-3 text-start">
+        <label for="email" class="form-label">
+          Email</label>
+        <input type="email" class="form-control" formControlName="email" id="email"
+          [class.valid]="loginForm.controls['email'].valid"
+          [class.invalid]="loginForm.controls['email'].invalid && loginForm.controls['email'].touched || loginForm.controls['email'].dirty">
+        <div
+          *ngIf="loginForm.controls['email'].invalid && loginForm.controls['email'].touched || loginForm.controls['email'].dirty">
+          <label class="error-message" *ngIf="loginForm.controls['email'].hasError('email')">
+            Não é um e-mail valido.
+          </label>
+          <label class="error-message" *ngIf="loginForm.controls['email'].hasError('required')">
+            Esse campo precisa ser preenchido.
+          </label>
+        </div>
+      </div>
+      <div class="mb-3 text-start">
+        <label for="senha" class="form-label">Senha</label>
+        <input type="password" id="senha" class="form-control" formControlName="senha"
+          aria-describedby="passwordHelpBlock" [class.valid]="loginForm.controls['senha'].valid"
+          [class.invalid]="loginForm.controls['senha'].invalid && loginForm.controls['senha'].touched || loginForm.controls['senha'].dirty">
+        <div id="passwordHelpBlock" class="form-text">
+          Sua senha deve ter de 8 a 20 caracteres.
+        </div>
+        <div
+          *ngIf="loginForm.controls['senha'].invalid && loginForm.controls['senha'].touched || loginForm.controls['senha'].dirty">
+          <label class="error-message" *ngIf="loginForm.controls['senha'].hasError('required')">
+            Esse campo precisa ser preenchido.
+          </label>
+          <label class="error-message" *ngIf="loginForm.controls['senha'].errors?.['minlength']">
+            Sua senha deve ter no mínimo 8 caracteres.
+          </label>
+        </div>
+      </div>
+      <button type="button" class="btn btn-primary">Entrar</button>
+    </form>
+    <div class="mb-3">
+      <p>Ainda não tem uma conta? <a href="#">Registre-se agora</a></p>
+    </div>
+  </div>
+</div>
