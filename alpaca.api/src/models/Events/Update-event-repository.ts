@@ -9,7 +9,9 @@ import { MongoEvents } from "../Protocols";
 
 export class MongoUpdateEventRepository implements IUpdateEventRepository {
   async update(id: string, params: IUpdateEventParams): Promise<IEvent> {
-    await MongoClient.db.collection<MongoEvents>("Events").updateOne(
+    console.log(params);
+    console.log(id);
+    await MongoClient.db.collection<MongoEvents>("events").updateOne(
       {
         _id: new ObjectId(id)
       },
@@ -20,17 +22,17 @@ export class MongoUpdateEventRepository implements IUpdateEventRepository {
       }
     );
 
-    const saving = await MongoClient.db
-      .collection<MongoEvents>("Events")
+    const event = await MongoClient.db
+      .collection<MongoEvents>("events")
       .findOne({
         _id: new ObjectId(id)
       });
 
-    if (!saving) {
+    if (!event) {
       throw Error("Event not updated");
     }
 
-    const { _id, ...rest } = saving;
+    const { _id, ...rest } = event;
     return { id: _id.toHexString(), ...rest };
   }
 }

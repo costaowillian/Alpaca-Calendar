@@ -48,6 +48,7 @@ export class UpdateEventController implements IController {
       return ok<IEvent>(event);
     } catch (error) {
       // Se ocorrer um erro durante o processo, retorna uma resposta de erro genérico
+      console.log(error);
       return serverError("06");
     }
   }
