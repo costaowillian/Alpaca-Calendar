@@ -1,23 +1,36 @@
-<app-navbar />
-<div class='demo-app'>
-  <div class='demo-app-sidebar'>
-    <div class='demo-app-sidebar-section'>
-      <h2>Seus Eventos do dia!</h2>
-      <ul>
-        <li *ngFor='let event of currentEvents()'>
-          <b>{{event.startStr}}</b>
-          <i>{{event.title}}</i>
-        </li>
-      </ul>
+<div class="vh-100">
+  <app-navbar />
+  <div class='demo-app'>
+    <div class='demo-app-sidebar'>
+      <div class='demo-app-sidebar-section'>
+        <h2>Seus Eventos do dia!</h2>
+        <ul>
+          <li *ngFor='let event of currentEvents()'>
+            <div class="card" style="width: 14rem;">
+              <div class="card-body">
+                <b>{{event.startStr}}</b>
+                <i>{{event.title}}</i>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
-  </div>
 
-  <div class='demo-app-main'>
-    <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
-      <ng-template #eventContent let-arg>
-        <b>{{ arg.timeText }}</b>
-        <i>{{ arg.event.title }}</i>
-      </ng-template>
-    </full-calendar>
+    <div class="container-fluid ">
+      <div class="row">
+        <div class="col-sm-12">
+          <div class='demo-app-main'>
+            <full-calendar *ngIf='calendarVisible()' [options]='calendarOptions()'>
+              <ng-template #eventContent let-arg>
+                <b>{{ arg.timeText }}</b>
+                <i>{{ arg.event.title }}</i>
+              </ng-template>
+            </full-calendar>
+          </div>
+        </div>
+      </div>
+    </div>
+
   </div>
 </div>

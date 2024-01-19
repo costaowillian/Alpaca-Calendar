@@ -7,7 +7,6 @@ import {
 } from '@fullcalendar/core';
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import ptLocale from '@fullcalendar/core/locales/pt';
@@ -22,24 +21,20 @@ import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 })
 export class CalendarComponent {
   calendarVisible = signal(true);
+
+  // Opções de configuração para o FullCalendar
   calendarOptions = signal<CalendarOptions>({
     locales: [ptLocale],
     locale: 'pt',
-    plugins: [
-      interactionPlugin,
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-      bootstrap5Plugin,
-    ],
+    plugins: [interactionPlugin, dayGridPlugin, listPlugin, bootstrap5Plugin],
     themeSystem: 'bootstrap5',
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek',
+      right: 'dayGridMonth,listWeek',
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     editable: true,
     selectable: true,
@@ -48,11 +43,7 @@ export class CalendarComponent {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
+    contentHeight: 'auto',
   });
   currentEvents = signal<EventApi[]>([]);
 
@@ -61,23 +52,30 @@ export class CalendarComponent {
     private alertService: AlertModalServiceService
   ) {}
 
+  // Alternar a visibilidade do calendário
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
   }
 
+  // Alternar a visibilidade dos fins de semana
   handleWeekendsToggle() {
     this.calendarOptions.mutate((options) => {
       options.weekends = !options.weekends;
     });
   }
 
+  // Lidar com a seleção de datas no calendário
   handleDateSelect(selectInfo: DateSelectArg) {
     const calendarApi = selectInfo.view.calendar;
-    calendarApi.unselect(); // clear date selection
+    calendarApi.unselect(); // Limpar seleção de data
+
+    // Exibir modal para criar evento
     const resutl$ = this.alertService.ShowCreateEvent();
     console.log(selectInfo.allDay);
 
+    // Assinar resultados do modal
     resutl$.asObservable().subscribe((form: FormGroup) => {
+      // Formatar datas e horas para o formato desejado
       const start = this.formatDate(
         selectInfo.startStr,
         form.value.start,
@@ -88,8 +86,8 @@ export class CalendarComponent {
         form.value.end,
         selectInfo.allDay
       );
-      console.log({ start });
-      console.log({ end });
+
+      // Adicionar evento ao calendário
       const title = form.value.description;
       const color = form.value.color;
       calendarApi.addEvent({
@@ -103,6 +101,7 @@ export class CalendarComponent {
     });
   }
 
+  // Formatar data e hora para o formato desejado
   formatDate(date: string, newHour: string, isAllDay: boolean): string {
     if (isAllDay) {
       let [year, mouth, day] = date.split('-');
@@ -132,6 +131,7 @@ export class CalendarComponent {
   //   }
   // }
 
+  // Lidar com o clique em eventos no calendário
   handleEventClick(clickInfo: EventClickArg) {
     const eventTitle = clickInfo.event.title;
     const eventStart = clickInfo.event.start;
@@ -140,6 +140,7 @@ export class CalendarComponent {
     alert(`Event Title: ${eventTitle}\nStart: ${eventStart}\nEnd: ${eventEnd}`);
   }
 
+  // Lidar com a atualização de eventos no calendário
   handleEvents(events: EventApi[]) {
     this.currentEvents.set(events);
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
