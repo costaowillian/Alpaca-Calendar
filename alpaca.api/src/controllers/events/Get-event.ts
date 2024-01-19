@@ -21,7 +21,6 @@ export class GetEventController implements IController {
 
       // Chama o método do repositório para obter informações sobre o evento
       const event = await this.getEventRepository.getEvent(id);
-      console.log({ event });
 
       // Se o evento não for encontrado, retorna uma resposta 404 (Not Found)
       if (!event) {

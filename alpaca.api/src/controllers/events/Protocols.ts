@@ -34,6 +34,7 @@ export interface ICreateEventRepository {
 // Interface que define os parâmetros para a atualização de um evento
 export interface IUpdateEventParams {
   id?: string;
+  _userId: string;
   description?: string;
   start?: string;
   end?: string;

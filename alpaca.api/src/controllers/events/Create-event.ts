@@ -1,3 +1,4 @@
+import { EventService } from "./../Event-service";
 import { IEvent } from "../../interfaces/Event";
 import { badRequest, created, objectNotCreated, serverError } from "../Helpers";
 import { HttpRequest, HttpResponse, IController } from "../Protocols";
@@ -9,10 +10,13 @@ import {
 
 // Classe que implementa a lógica para controlar a criação de um evento
 export class CreateEventController implements IController {
+  private eventService: EventService;
   constructor(
     private readonly createEventRepository: ICreateEventRepository,
     private readonly getEventByDateRepository: IGetEventByDateRepository
-  ) {}
+  ) {
+    this.eventService = new EventService(this.getEventByDateRepository);
+  }
 
   // Método que lida com a requisição para criar um evento
   async handle(
@@ -40,12 +44,9 @@ export class CreateEventController implements IController {
       }
 
       // Verifica se já existe um evento com a mesma data e hora
-      const isEvent = await this.getEventByDateRepository.getEvent({
-        _userId: body._userId.toString(),
-        start: body.start,
-        end: body.end
+      const isEvent = await this.eventService.updateEvent({
+        body
       });
-
       // Se existir, retorna uma resposta indicando que o evento não foi criado
       if (isEvent) {
         return objectNotCreated(

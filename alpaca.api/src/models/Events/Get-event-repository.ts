@@ -6,7 +6,6 @@ import { MongoEvents } from "../Protocols";
 
 export class MongoGetEventRepository implements IGetEventRepository {
   async getEvent(id: string): Promise<IEvent | null> {
-    console.log(id);
     const event = await MongoClient.db
       .collection<MongoEvents>("events")
       .findOne({

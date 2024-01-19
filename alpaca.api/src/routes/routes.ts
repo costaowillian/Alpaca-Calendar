@@ -95,8 +95,10 @@ router.get("/events/get/:id", checkToken, async (req, res) => {
 //Rota para atualizar um evento com base no id
 router.put("/events/update", checkToken, async (req, res) => {
   const mongoUpdateEventRepository = new MongoUpdateEventRepository();
+  const mongoGetEventByDateRepository = new MongoGetEventByDateRepository();
   const updateEventController = new UpdateEventController(
-    mongoUpdateEventRepository
+    mongoUpdateEventRepository,
+    mongoGetEventByDateRepository
   );
   const { body, statusCode } = await updateEventController.handle({
     body: req.body
