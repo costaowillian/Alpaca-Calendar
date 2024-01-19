@@ -14,6 +14,7 @@ import { TooltipModule } from 'ngx-bootstrap/tooltip';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './components/forms/login/login.component';
+import { SingupComponent } from './components/forms/singup/singup.component';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { LoginComponent } from './components/forms/login/login.component';
     CreateEventComponent,
     NavbarComponent,
     LoginComponent,
+    SingupComponent,
   ],
   imports: [
     FormsModule,
