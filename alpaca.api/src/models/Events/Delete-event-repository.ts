@@ -7,7 +7,7 @@ import { MongoClient } from "../../database/mongo";
 export class MongoDeleteEventRepository implements IDeleteEventRepository {
   async deleteEvent(id: string): Promise<IEvent | null> {
     const event = await MongoClient.db
-      .collection<MongoEvents>("Event")
+      .collection<MongoEvents>("events")
       .findOne({ _id: new ObjectId(id) });
 
     if (!event) {
@@ -15,7 +15,7 @@ export class MongoDeleteEventRepository implements IDeleteEventRepository {
     }
 
     const { deletedCount } = await MongoClient.db
-      .collection<MongoEvents>("Event")
+      .collection<MongoEvents>("events")
       .deleteOne({ _id: new ObjectId(id) });
 
     if (!deletedCount) {

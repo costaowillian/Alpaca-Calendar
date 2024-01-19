@@ -18,7 +18,6 @@ export class DeleteEventController implements IController {
       if (!id) {
         return badRequest("Missing Event id");
       }
-
       // Chama o método do repositório para excluir o evento
       const event = await this.deleteEventRepository.deleteEvent(id);
 

@@ -9,8 +9,6 @@ import { MongoEvents } from "../Protocols";
 
 export class MongoUpdateEventRepository implements IUpdateEventRepository {
   async update(id: string, params: IUpdateEventParams): Promise<IEvent> {
-    console.log(params);
-    console.log(id);
     await MongoClient.db.collection<MongoEvents>("events").updateOne(
       {
         _id: new ObjectId(id)
