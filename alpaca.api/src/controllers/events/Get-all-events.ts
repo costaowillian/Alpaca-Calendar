@@ -20,7 +20,7 @@ export class GetEventsController implements IController {
       }
 
       // Chama o método do repositório para obter os eventos por usuário
-      const events = this.getEventsRepository.getEvents(userId);
+      const events = await this.getEventsRepository.getEvents(userId);
 
       // Retorna uma resposta HTTP 200 (OK) com a lista de eventos
       return ok<IEvent[]>(events);
