@@ -1,5 +1,5 @@
 import { GetEventsController } from "./../controllers/events/Get-all-events";
-import { MongoGetEventsrepository } from "./../models/Events/Get-all-events-repository";
+import { MongoGetEventsRepository } from "./../models/Events/Get-all-events-repository";
 import express from "express";
 import { MongoGetUserRepository } from "../models/user/Get-all-users-repository";
 import { GetUserController } from "../controllers/user/Get-all-user";
@@ -72,7 +72,7 @@ router.post("/users/auth", async (req, res) => {
 
 //Rota para pegar todos os eventos com base no id do usuário
 router.get("/events/get/:userId", checkToken, async (req, res) => {
-  const mongoGetEventsrepository = new MongoGetEventsrepository();
+  const mongoGetEventsrepository = new MongoGetEventsRepository();
   const getEventsController = new GetEventsController(mongoGetEventsrepository);
   const { body, statusCode } = await getEventsController.handle({
     params: req.params
