@@ -59,7 +59,7 @@ router.post("/users/create-user", async (req, res) => {
 });
 
 //Rota para autenticar um usuário
-router.post("users/auth", async (req, res) => {
+router.post("/users/auth", async (req, res) => {
   const mongoGetUserAuthRepository = new MongoGetUserAuthRepository();
   const logiUserController = new LoginUserController(
     mongoGetUserAuthRepository
