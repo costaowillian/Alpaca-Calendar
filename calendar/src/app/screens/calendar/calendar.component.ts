@@ -131,13 +131,24 @@ export class CalendarComponent {
   //   }
   // }
 
-  // Lidar com o clique em eventos no calendário
+  convertToHourString(hour: Date) {
+    return `${hour?.getHours().toLocaleString().padStart(2, '0')}:${hour
+      ?.getMinutes()
+      .toLocaleString()
+      .padStart(2, '0')}`;
+  }
+
+  // Lidar com o clique em eventos no calendário e abre o modal apra edição ou exclusão!
   handleEventClick(clickInfo: EventClickArg) {
     const eventTitle = clickInfo.event.title;
     const eventStart = clickInfo.event.start;
     const eventEnd = clickInfo.event.end;
 
-    alert(`Event Title: ${eventTitle}\nStart: ${eventStart}\nEnd: ${eventEnd}`);
+    this.alertService.ShowEditEvent(
+      eventTitle,
+      this.convertToHourString(eventStart!),
+      this.convertToHourString(eventEnd!)
+    );
   }
 
   // Lidar com a atualização de eventos no calendário

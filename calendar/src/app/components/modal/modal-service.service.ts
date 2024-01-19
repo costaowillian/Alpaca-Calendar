@@ -4,6 +4,7 @@ import { ConfirmModalComponent } from './confirm-modal/confirm-modal.component';
 import { CreateEventComponent } from './create-event/create-event.component';
 import { Subject } from 'rxjs';
 import { FormGroup } from '@angular/forms';
+import { Time } from '@angular/common';
 
 @Injectable({
   providedIn: 'root',
@@ -31,6 +32,19 @@ export class AlertModalServiceService {
 
   ShowCreateEvent(): Subject<FormGroup> {
     const bsModalRef: BsModalRef = this.modalService.show(CreateEventComponent);
+
+    return (<CreateEventComponent>bsModalRef.content).createResult;
+  }
+
+  ShowEditEvent(
+    description: string,
+    strat: string,
+    end: string
+  ): Subject<FormGroup> {
+    const bsModalRef: BsModalRef = this.modalService.show(CreateEventComponent);
+    bsModalRef.content.description = description;
+    bsModalRef.content.start = strat;
+    bsModalRef.content.end = end;
 
     return (<CreateEventComponent>bsModalRef.content).createResult;
   }
