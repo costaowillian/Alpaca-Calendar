@@ -1,0 +1,9 @@
+.logo {
+  display: none !important;
+}
+
+@media screen and (min-width: 900px) {
+  .logo {
+    display: block !important;
+  }
+}

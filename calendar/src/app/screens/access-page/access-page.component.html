@@ -5,10 +5,11 @@
     </a>
   </div>
 </nav>
+
 <div class="container d-flex align-items-center justify-content-between vh-100">
   <app-login *ngIf="showLogin" (showLogin)="changeComponent($event)" class="mb-3" [@fadeInOut]="'in'" />
   <app-singup *ngIf="!showLogin" (showLogin)="changeComponent($event)" class="mb-3" [@fadeInOut]="'in'" />
-  <div class="mt-3">
+  <div class="mt-3 logo">
     <img src="../../../assets/alpaca_calendar_img.svg" alt="alpaca_calendar_img">
   </div>
 </div>
