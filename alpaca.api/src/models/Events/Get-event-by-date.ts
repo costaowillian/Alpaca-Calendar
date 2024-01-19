@@ -14,9 +14,9 @@ export class MongoGetEventByDateRepository
     const event = await MongoClient.db
       .collection<MongoEvents>("events")
       .findOne({
-        _id: new ObjectId(params._userId),
-        start: params.start,
-        end: params.end
+        _userId: new ObjectId(params._userId),
+        start: { $gte: params.start, $lte: params.end },
+        end: { $gte: params.start, $lte: params.end }
       });
 
     if (!event) {
