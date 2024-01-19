@@ -1,3 +1,4 @@
+import { ObjectId } from "mongodb";
 import { IEvent } from "../../interfaces/Event";
 
 // Interface que define os parâmetros para obter eventos por usuário
@@ -7,7 +8,7 @@ export interface IGetEventsParams {
 
 // Interface que define os parâmetros para criar eventos por usuário
 export interface ICreateEventParams {
-  _userId: string;
+  _userId: string | ObjectId;
   description: string;
   start: string;
   end: string;

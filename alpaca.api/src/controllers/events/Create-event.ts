@@ -41,7 +41,7 @@ export class CreateEventController implements IController {
 
       // Verifica se já existe um evento com a mesma data e hora
       const isEvent = await this.getEventByDateRepository.getEvent({
-        _userId: body._userId,
+        _userId: body._userId.toString(),
         start: body.start,
         end: body.end
       });

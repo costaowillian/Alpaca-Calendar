@@ -1,3 +1,4 @@
+import { ObjectId } from 'mongodb';
 import {
   ICreateEventParams,
   ICreateEventRepository
@@ -8,6 +9,9 @@ import { MongoEvents } from "../Protocols";
 
 export class MongoCreateEventRepository implements ICreateEventRepository {
   async createEvent(params: ICreateEventParams): Promise<IEvent | null> {
+    
+    params._userId = new ObjectId(params._userId);
+
     const { insertedId } = await MongoClient.db
       .collection("events")
       .insertOne(params);

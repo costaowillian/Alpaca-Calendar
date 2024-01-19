@@ -18,7 +18,7 @@ import { CreateEventController } from "../controllers/events/Create-event";
 import { MongoGetEventByDateRepository } from "../models/Events/Get-event-by-date";
 import { MongoDeleteEventRepository } from "../models/Events/Delete-event-repository";
 import { DeleteEventController } from "../controllers/events/Delete-event";
-import { MongoCreateEventRepository } from "../models/Events/Create-Event_repository";
+import { MongoCreateEventRepository } from "../models/Events/Create-event_repository";
 
 const router = express.Router();
 

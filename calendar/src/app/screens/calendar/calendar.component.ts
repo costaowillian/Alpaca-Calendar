@@ -88,6 +88,8 @@ export class CalendarComponent {
         form.value.end,
         selectInfo.allDay
       );
+      console.log({ start });
+      console.log({ end });
       const title = form.value.description;
       const color = form.value.color;
       calendarApi.addEvent({
