@@ -15,8 +15,32 @@ export class MongoGetEventByDateRepository
       .collection<MongoEvents>("events")
       .findOne({
         _userId: new ObjectId(params._userId),
-        start: { $gte: params.start, $lte: params.end },
-        end: { $gte: params.start, $lte: params.end }
+        $or: [
+          {
+            $and: [
+              { start: { $gte: params.start } },
+              { start: { $lt: params.end } }
+            ]
+          },
+          {
+            $and: [
+              { end: { $gt: params.start } },
+              { end: { $lte: params.end } }
+            ]
+          },
+          {
+            $and: [
+              { start: { $lte: params.start } },
+              { end: { $gte: params.end } }
+            ]
+          },
+          {
+            $and: [
+              { start: { $lte: params.start } },
+              { end: { $gte: params.end } }
+            ]
+          }
+        ]
       });
 
     if (!event) {
