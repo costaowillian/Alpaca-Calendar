@@ -45,7 +45,9 @@ export class SingupComponent {
     }
   }
 
+  // Criar um novo usuário
   async handleCreateUser(): Promise<void> {
+    //verifica se o formulário está valido
     if (this.signUpForm.invalid) {
       this.hasError = 'por favor, preencha todos os campos!';
       return;
@@ -57,9 +59,14 @@ export class SingupComponent {
         senha: this.signUpForm.value.senha!,
       };
 
-      const createdUser = await this.userService.createuser(user);
+      // Criar usuário e verificar se já existe
+      const createdUser = await this.userService.createUser(user);
 
-      if (createdUser) {
+      if (createdUser && createdUser == 422) {
+        this.hasError = 'Esté e-mail já está cadastrado!';
+        return;
+      } else if (createdUser) {
+        // Se o usuário foi criado com sucesso, autenticar automaticamente
         this.handleAuthUser({
           email: this.signUpForm.value.email!,
           senha: this.signUpForm.value.senha!,

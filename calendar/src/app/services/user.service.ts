@@ -13,7 +13,7 @@ import { apiUrl } from './helper';
 export class UserService {
   constructor() {}
 
-  async createuser(user: ICreateUserCredentials): Promise<boolean> {
+  async createUser(user: ICreateUserCredentials): Promise<boolean | number> {
     // Convertendo os parâmetros do usuário para o formato JSON
     const data = JSON.stringify({
       firstName: user.firstName,
@@ -40,10 +40,23 @@ export class UserService {
       if (response.status == 201) {
         return true;
       } else {
+        if (response.status == 422) {
+          return 422;
+        }
         return false;
       }
     } catch (error) {
-      return false;
+      // Capturando erros de rede, timeout, etc.
+      if (axios.isAxiosError(error) && error.response) {
+        // Se for um erro Axios com resposta, trate o código de status aqui
+        if (error.response.status === 422) {
+          return 422;
+        } else {
+          return false;
+        }
+      } else {
+        return false;
+      }
     }
   }
 
