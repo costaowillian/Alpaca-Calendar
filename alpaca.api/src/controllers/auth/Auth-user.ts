@@ -1,5 +1,5 @@
 import { IToken } from "../../interfaces/Token";
-import { badRequest, ok, serverError } from "../Helpers";
+import { badRequest, notFound, ok, serverError } from "../Helpers";
 import { HttpRequest, HttpResponse, IController } from "../Protocols";
 import { LoginUserParams } from "./Protocols";
 import bcrypt from "bcrypt";
@@ -34,7 +34,7 @@ export class LoginUserController implements IController {
       );
 
       if (!user) {
-        return badRequest("User not Found");
+        return notFound("User not Found");
       }
 
       // Verifica se a senha fornecida corresponde à senha armazenada no banco de dados, se a senha não corresponder, retorna um erro 400
