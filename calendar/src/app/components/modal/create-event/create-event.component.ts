@@ -1,5 +1,10 @@
 import { Component, Input } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
 
@@ -16,6 +21,7 @@ export class CreateEventComponent {
 
   // Mensagem de erro, formulário do evento e resultado da criação
   hasError: string;
+  hasMissingFields: string;
 
   createResult!: Subject<FormGroup>;
   //formulário de criação de envento
@@ -27,6 +33,7 @@ export class CreateEventComponent {
 
   constructor(public bsModalRef: BsModalRef, private fb: FormBuilder) {
     this.hasError = '';
+    this.hasMissingFields = '';
   }
 
   ngOnInit() {
@@ -40,7 +47,10 @@ export class CreateEventComponent {
 
   // Método chamado quando o modal é confirmado
   onConfirm() {
-    this.crateAndClose(true);
+    if (this.eventoForm.invalid) {
+      this.hasMissingFields = 'Preencha todos os campos'
+      return;
+    }
   }
 
   // Método privado para realizar a criação e fechar o modal

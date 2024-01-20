@@ -41,7 +41,18 @@
           </label>
         </div>
       </div>
+      <div
+        *ngIf="eventoForm.controls['end'].invalid && eventoForm.controls['end'].touched || eventoForm.controls['end'].dirty">
+        <label class="error-message" *ngIf="eventoForm.controls['end'].hasError('required')">
+          A hora de término é obrigatória.
+        </label>
+      </div>
       <div class="modal-footer">
+        <div *ngIf="hasMissingFields">
+          <label class="error-message" *ngIf="hasMissingFields">
+            {{ hasMissingFields }}
+          </label>
+        </div>
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClose()">Cancelar</button>
 
         <!-- Verifica se existe description, start e end para exibir os botões de editar e excluir -->
