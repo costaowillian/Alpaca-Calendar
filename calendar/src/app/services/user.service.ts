@@ -8,9 +8,9 @@ import { AuthService } from './auth.service';
   providedIn: 'root',
 })
 export class UserService {
-  constructor(private authService: AuthService) {}
+  constructor() {}
 
-  async getUserData(user: IUserCredentials): Promise<IUser> {
+  async getUserData(user: IUserCredentials): Promise<IUser | string> {
     // Convertendo os parâmetros do usuário para o formato JSON
     const data = JSON.stringify({
       email: user.email,
@@ -35,6 +35,8 @@ export class UserService {
 
       if (response.status == 201) {
         return response.data;
+      } else if (response.status == 404) {
+        return 'erro 404';
       } else {
         throw new Error('Erro ao criar evento');
       }

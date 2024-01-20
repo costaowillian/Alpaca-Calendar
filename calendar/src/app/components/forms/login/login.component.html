@@ -3,7 +3,7 @@
     <h5 class=" card-title">Login</h5>
     <p class="card-text">Hey, adicione suas credenciais para entrar no seu calendário
     </p>
-    <form [formGroup]="loginForm">
+    <form [formGroup]="loginForm" (ngSubmit)="handleAuth()">
       <div class="mb-3 text-start">
         <label for="email" class="form-label">
           Email</label>
@@ -38,7 +38,10 @@
           </label>
         </div>
       </div>
-      <button type="button" class="btn btn-primary">Entrar</button>
+      <div class="mb-3">
+        <p class="error-message" *ngIf="hasError">{{ hasError }}</p>
+      </div>
+      <button type="submit" class="btn btn-primary">Entrar</button>
     </form>
     <div class="mb-3">
       <p>Ainda não tem uma conta? <a class="redirect" type="button" (click)="handleOnClick()">Registre-se agora</a></p>

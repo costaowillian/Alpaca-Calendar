@@ -2,6 +2,7 @@ import { environment } from 'src/environment/environment';
 import { Injectable } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { UserService } from './user.service';
+import { IUserCredentials } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -21,24 +22,25 @@ export class AuthService {
   }
 
   getAuthorizationToken(): string {
-    const token = this.decrypt(window.localStorage.getItem('token') || "");
+    const token = this.decrypt(window.localStorage.getItem('token') || '');
     return token;
   }
 
-  async authUser (user: string): Promise<boolean> {
-    const userData = await this.userService.getUserData(acessKey);
-    if (userData) {
+  async authUser(user: IUserCredentials): Promise<boolean> {
+    const userData = await this.userService.getUserData(user);
+
+    if (userData && typeof userData !== 'string') {
       window.localStorage.setItem('token', this.encrypt(userData.token));
       window.localStorage.setItem('user', this.encrypt(userData.id));
       return true;
     }
-    
+
     return false;
   }
 
-  isUserLoggedIn () {
+  isUserLoggedIn() {
     const token = this.getAuthorizationToken();
-    if(!token) {
+    if (!token) {
       return false;
     }
 

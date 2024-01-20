@@ -15,7 +15,7 @@ export class EventServiceService {
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'get',
-      url: `${apiUrl}/get-all/${userId}`,
+      url: `${apiUrl}/events/get-all/${userId}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -50,7 +50,7 @@ export class EventServiceService {
     const axiosConfig = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${apiUrl}/create`,
+      url: `${apiUrl}/events/create`,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
