@@ -1,5 +1,6 @@
 import { Component, EventEmitter, Output } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
+import { Router } from '@angular/router';
 import { AuthService } from 'src/app/services/auth.service';
 
 @Component({
@@ -16,7 +17,11 @@ export class LoginComponent {
     senha: ['', [Validators.minLength(8), Validators.required]],
   });
 
-  constructor(private fb: FormBuilder, private authService: AuthService) {
+  constructor(
+    private fb: FormBuilder,
+    private authService: AuthService,
+    private router: Router
+  ) {
     this.hasError = '';
   }
 
@@ -38,7 +43,7 @@ export class LoginComponent {
 
     const isAuth = await this.authService.authUser(user);
     if (isAuth) {
-      console.log('autenticado');
+      this.router.navigate(['home']);
     } else {
       this.hasError = 'Credencias inválidas, por favor tente novamente!';
     }

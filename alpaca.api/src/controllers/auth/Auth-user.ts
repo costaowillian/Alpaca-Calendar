@@ -29,9 +29,7 @@ export class LoginUserController implements IController {
         return badRequest("The password is mandatory!");
       }
       // Busca o usuário no repositório com base no email fornecido, se não for encontrado, retorna um erro 404
-      const user = await this.getUserAuthRepository.findByEmail(
-        httpRequest.body!.email
-      );
+      const user = await this.getUserAuthRepository.findByEmail(email);
 
       if (!user) {
         return notFound("User not Found");

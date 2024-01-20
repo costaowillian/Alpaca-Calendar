@@ -28,14 +28,18 @@ export class AuthService {
 
   async authUser(user: IUserCredentials): Promise<boolean> {
     const userData = await this.userService.getUserData(user);
-
     if (userData && typeof userData !== 'string') {
       window.localStorage.setItem('token', this.encrypt(userData.token));
       window.localStorage.setItem('user', this.encrypt(userData.id));
       return true;
     }
-    
+
     return false;
+  }
+
+  logout() {
+    window.localStorage.removeItem('token');
+    window.localStorage.removeItem('user');
   }
 
   isUserLoggedIn() {

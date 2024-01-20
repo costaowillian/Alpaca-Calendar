@@ -11,6 +11,7 @@ export class UserService {
 
   async getUserData(user: IUserCredentials): Promise<IUser | string> {
     // Convertendo os parâmetros do usuário para o formato JSON
+    console.log({ inuserService: user });
     const data = JSON.stringify({
       email: user.email,
       password: user.senha,
@@ -19,7 +20,6 @@ export class UserService {
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'post',
-      maxBodyLength: Infinity,
       url: `${apiUrl}/users/auth`,
       headers: {
         'Content-Type': 'application/json',
@@ -30,10 +30,17 @@ export class UserService {
     try {
       // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
       const response = await axios.request(axiosConfig);
-      console.log(response.status, response.data);
+      console.log('tste' + response.status, response.data);
 
       if (response.status == 200) {
-        return response.data;
+        const user = {
+          id: response.data.user.id,
+          token: response.data.token,
+          firstName: response.data.user.fisrtName,
+          lastName: response.data.user.lasName,
+          email: response.data.user.email,
+        };
+        return user;
       } else {
         // Tratando diferentes códigos de status
         if (response.status == 404) {
