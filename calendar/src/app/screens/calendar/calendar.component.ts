@@ -1,4 +1,4 @@
-import { Component, signal, ChangeDetectorRef } from '@angular/core';
+import { Component, signal, ChangeDetectorRef, OnInit } from '@angular/core';
 import {
   CalendarOptions,
   DateSelectArg,
@@ -13,13 +13,14 @@ import ptLocale from '@fullcalendar/core/locales/pt';
 import { AlertModalServiceService } from '../../components/modal/modal-service.service';
 import { FormGroup } from '@angular/forms';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
+import { EventServiceService } from 'src/app/services/event-service.service';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent {
+export class CalendarComponent implements OnInit{
   calendarVisible = signal(true);
 
   // Opções de configuração para o FullCalendar
@@ -49,8 +50,12 @@ export class CalendarComponent {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private alertService: AlertModalServiceService
+    private alertService: AlertModalServiceService,
+    private eventService: EventServiceService
   ) {}
+  ngOnInit(): void {
+    this.eventService.getAllEvents("1","2");
+  }
 
   // Alternar a visibilidade do calendário
   handleCalendarToggle() {
