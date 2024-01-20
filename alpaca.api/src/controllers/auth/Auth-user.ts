@@ -44,7 +44,7 @@ export class LoginUserController implements IController {
       );
 
       if (!checkPassword) {
-        return badRequest("Invalid credentials");
+        return notFound("Invalid credentials");
       }
 
       // Obtém a chave secreta do ambiente (certifique-se de configurar essa variável de ambiente)
