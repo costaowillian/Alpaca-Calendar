@@ -4,7 +4,7 @@
       <img src="../../../assets/logo/alpaca_calenda_logo_extend.svg" alt="Alpaca Calendar" height="34">
     </a>
     <div class="navbar-nav ms-auto">
-      <button class="btn btn-danger">Sair</button>
+      <button *ngIf="showButton" (click)="logout()" class="btn btn-danger">Sair</button>
     </div>
   </div>
 </nav>
