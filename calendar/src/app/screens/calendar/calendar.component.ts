@@ -8,7 +8,6 @@ import {
 import interactionPlugin from '@fullcalendar/interaction';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import listPlugin from '@fullcalendar/list';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
 import ptLocale from '@fullcalendar/core/locales/pt';
 import { AlertModalServiceService } from '../../components/modal/modal-service.service';
 import { FormGroup } from '@angular/forms';
@@ -89,30 +88,31 @@ export class CalendarComponent implements OnInit {
     const resutl$ = this.alertService.ShowCreateEvent();
 
     // Assinar resultados do modal
-    resutl$.asObservable().subscribe((form: FormGroup) => {
-      // Formatar datas e horas para o formato desejado
-      const start = this.formatDate(
-        selectInfo.startStr,
-        form.value.start,
-        false
-      );
-      const end = this.formatDate(
-        selectInfo.endStr,
-        form.value.end,
-        selectInfo.allDay
-      );
-
+    resutl$.asObservable().subscribe(async (form: FormGroup) => {
       // Adicionar evento ao calendário
-      const title = form.value.description;
-      const color = form.value.color;
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: start,
-        end: end,
-        allDay: false,
-        backgroundColor: color,
-      });
+      const event: IEvent = {
+        description: form.value.description,
+        start: this.formatDate(selectInfo.startStr, form.value.start, false),
+        end: this.formatDate(
+          selectInfo.endStr,
+          form.value.end,
+          selectInfo.allDay
+        ),
+        _userId: '65a9bd66eb7d9fc9360dbd55',
+      };
+
+      const result = await this.eventService.createEvent(event, '1');
+
+      if (result && typeof result !== 'string') {
+        calendarApi.addEvent({
+          id: result.id,
+          title: result.description,
+          start: result.start,
+          end: result.end,
+        });
+      } else if (result == 'data duplicada') {
+        //this.alertService.ShowConfirm();
+      }
     });
   }
 

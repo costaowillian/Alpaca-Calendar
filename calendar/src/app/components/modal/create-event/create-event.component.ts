@@ -9,18 +9,21 @@ import { Subject } from 'rxjs';
   styleUrls: ['./create-event.component.css'],
 })
 export class CreateEventComponent {
+  // Propriedades de entrada para descrição, início e fim do evento
   @Input() description: string = '';
   @Input() start: string = '';
   @Input() end: string = '';
 
+  // Mensagem de erro, formulário do evento e resultado da criação
   hasError: string;
+
+  createResult!: Subject<FormGroup>;
+  //formulário de criação de envento
   eventoForm = this.fb.group({
     description: ['', [Validators.required]],
     start: ['', [Validators.required]],
     end: ['', [Validators.required]],
   });
-
-  createResult!: Subject<FormGroup>;
 
   constructor(public bsModalRef: BsModalRef, private fb: FormBuilder) {
     this.hasError = '';
@@ -30,14 +33,17 @@ export class CreateEventComponent {
     this.createResult = new Subject();
   }
 
+  // Método chamado quando o modal é fechado sem confirmação
   onClose() {
-    this.crateAndClose(false);
+    this.bsModalRef.hide();
   }
 
+  // Método chamado quando o modal é confirmado
   onConfirm() {
     this.crateAndClose(true);
   }
 
+  // Método privado para realizar a criação e fechar o modal
   private crateAndClose(value: boolean) {
     this.createResult.next(this.eventoForm);
     this.bsModalRef.hide();
