@@ -1,14 +1,13 @@
 import { IEvent } from './../models/event';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
+import { apiUrl } from './helper';
 
 @Injectable({
   providedIn: 'root',
 })
 // Serviço responsável por lidar com operações relacionadas a eventos
 export class EventServiceService {
-  // URL base da API de eventos
-  private apiUrl = 'http://localhost:8000/api/events';
   constructor() {}
 
   // Método para obter todos os eventos de um usuário
@@ -16,7 +15,7 @@ export class EventServiceService {
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'get',
-      url: `${this.apiUrl}/get-all/${userId}`,
+      url: `${apiUrl}/get-all/${userId}`,
       headers: {
         Authorization: `Bearer ${token}`,
       },
@@ -51,7 +50,7 @@ export class EventServiceService {
     const axiosConfig = {
       method: 'post',
       maxBodyLength: Infinity,
-      url: `${this.apiUrl}/create`,
+      url: `${apiUrl}/create`,
       headers: {
         Authorization: `Bearer ${token}`,
         'Content-Type': 'application/json',
