@@ -14,15 +14,15 @@ import { AlertModalServiceService } from '../../components/modal/modal-service.s
 import { FormGroup } from '@angular/forms';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { EventServiceService } from 'src/app/services/event-service.service';
+import { IEvent } from 'src/app/models/event';
 
 @Component({
   selector: 'app-calendar',
   templateUrl: './calendar.component.html',
   styleUrls: ['./calendar.component.css'],
 })
-export class CalendarComponent implements OnInit{
+export class CalendarComponent implements OnInit {
   calendarVisible = signal(true);
-
   // Opções de configuração para o FullCalendar
   calendarOptions = signal<CalendarOptions>({
     locales: [ptLocale],
@@ -35,7 +35,7 @@ export class CalendarComponent implements OnInit{
       right: 'dayGridMonth,listWeek',
     },
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
+    initialEvents: this.handleGetEvents.bind(this),
     weekends: true,
     editable: true,
     selectable: true,
@@ -46,27 +46,38 @@ export class CalendarComponent implements OnInit{
     eventsSet: this.handleEvents.bind(this),
     contentHeight: 'auto',
   });
-  currentEvents = signal<EventApi[]>([]);
+  currentEvents: EventApi[] = [];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private alertService: AlertModalServiceService,
     private eventService: EventServiceService
   ) {}
+
   ngOnInit(): void {
-    this.eventService.getAllEvents("1","2");
+    this.handleGetEvents();
+  }
+
+  // Obtendo eventos do serviço
+  async handleGetEvents() {
+    const events = await this.eventService.getAllEvents('1', '2');
+    if (!events) {
+      location.reload();
+    }
+
+    // Mapeando os eventos e renomeando a propriedade 'description' para 'title'
+    const eventsWithTitle = events.map((event) => ({
+      ...event,
+      title: event.description,
+      description: undefined,
+    }));
+
+    return eventsWithTitle;
   }
 
   // Alternar a visibilidade do calendário
   handleCalendarToggle() {
     this.calendarVisible.update((bool) => !bool);
-  }
-
-  // Alternar a visibilidade dos fins de semana
-  handleWeekendsToggle() {
-    this.calendarOptions.mutate((options) => {
-      options.weekends = !options.weekends;
-    });
   }
 
   // Lidar com a seleção de datas no calendário
@@ -76,7 +87,6 @@ export class CalendarComponent implements OnInit{
 
     // Exibir modal para criar evento
     const resutl$ = this.alertService.ShowCreateEvent();
-    console.log(selectInfo.allDay);
 
     // Assinar resultados do modal
     resutl$.asObservable().subscribe((form: FormGroup) => {
@@ -148,6 +158,7 @@ export class CalendarComponent implements OnInit{
     const eventTitle = clickInfo.event.title;
     const eventStart = clickInfo.event.start;
     const eventEnd = clickInfo.event.end;
+    const id = clickInfo.event.id;
 
     this.alertService.ShowEditEvent(
       eventTitle,
@@ -158,7 +169,7 @@ export class CalendarComponent implements OnInit{
 
   // Lidar com a atualização de eventos no calendário
   handleEvents(events: EventApi[]) {
-    this.currentEvents.set(events);
+    this.currentEvents = events;
     this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
   }
 }
