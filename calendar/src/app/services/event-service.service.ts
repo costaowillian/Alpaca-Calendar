@@ -13,7 +13,6 @@ export class EventServiceService {
 
   // Método para obter todos os eventos de um usuário
   async getAllEvents(): Promise<IEvent[]> {
-
     const userId = this.authService.getAuthorizationToken('user');
     const token = this.authService.getAuthorizationToken('token');
 
@@ -43,16 +42,17 @@ export class EventServiceService {
 
   // Método para criar um evento
   async createEvent(params: IEvent): Promise<IEvent | string> {
-
+    const userId = this.authService.getAuthorizationToken('user');
     const token = this.authService.getAuthorizationToken('token');
-    
+    console.log('id ' + userId + ' token ' + token);
     // Convertendo os parâmetros do evento para o formato JSON
     const data = JSON.stringify({
-      _userId: params._userId,
+      _userId: userId,
       description: params.description,
       start: params.start,
       end: params.end,
     });
+    console.log(data);
 
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
@@ -69,18 +69,32 @@ export class EventServiceService {
     try {
       // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
       const response = await axios.request(axiosConfig);
-      console.log(response.status, response.data);
-
+      console.log(response);
       if (response.status == 201) {
         return response.data;
-      } else if (response.status == 422) {
-        return 'data duplicada';
       } else {
-        throw new Error('Erro ao criar evento');
+        // Tratando diferentes códigos de status
+        if (response.status == 422) {
+          return 'erro 422';
+        } else {
+          return 'error 422';
+        }
       }
     } catch (error) {
-      console.error('Error', error);
-      throw error;
+      // Capturando erros de rede, timeout, etc.
+      if (axios.isAxiosError(error) && error.response) {
+        // Se for um erro Axios com resposta, trate o código de status aqui
+        if (error.response.status === 422) {
+          return 'erro 422';
+        } else {
+          throw new Error(
+            `Erro na solicitação com status ${error.response.status}`
+          );
+        }
+      } else {
+        // Tratamento para outros tipos de erros
+        throw new Error('Erro ao processar a solicitação');
+      }
     }
   }
 }

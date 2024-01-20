@@ -62,7 +62,7 @@ export class CalendarComponent implements OnInit {
   // Obtendo eventos do serviço
   async handleGetEvents() {
     const events = await this.eventService.getAllEvents();
-  
+
     // Mapeando os eventos e renomeando a propriedade 'description' para 'title'
     const eventsWithTitle = events.map((event) => ({
       ...event,
@@ -97,7 +97,7 @@ export class CalendarComponent implements OnInit {
           form.value.end,
           selectInfo.allDay
         ),
-        _userId: "",
+        _userId: '',
       };
 
       const result = await this.eventService.createEvent(event);
@@ -110,7 +110,7 @@ export class CalendarComponent implements OnInit {
           end: result.end,
         });
         this.showSuccess('Sucesso', 'Evento adicionadoa a agenda!');
-      } else if (result == 'data duplicada') {
+      } else if (result == 'erro 422') {
         this.showError('Falha ao criar', 'Já existe um evento nesse horario!');
       }
     });
