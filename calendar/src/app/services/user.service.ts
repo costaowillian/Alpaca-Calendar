@@ -2,7 +2,6 @@ import { IUser, IUserCredentials } from './../models/user';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { apiUrl } from './helper';
-import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -33,16 +32,31 @@ export class UserService {
       const response = await axios.request(axiosConfig);
       console.log(response.status, response.data);
 
-      if (response.status == 201) {
+      if (response.status == 200) {
         return response.data;
-      } else if (response.status == 404) {
-        return 'erro 404';
       } else {
-        throw new Error('Erro ao criar evento');
+        // Tratando diferentes códigos de status
+        if (response.status == 404) {
+          return 'erro 404';
+        } else {
+          return 'error 404';
+        }
       }
     } catch (error) {
-      console.error('Error', error);
-      throw error;
+      // Capturando erros de rede, timeout, etc.
+      if (axios.isAxiosError(error) && error.response) {
+        // Se for um erro Axios com resposta, trate o código de status aqui
+        if (error.response.status === 404) {
+          return 'erro 404';
+        } else {
+          throw new Error(
+            `Erro na solicitação com status ${error.response.status}`
+          );
+        }
+      } else {
+        // Tratamento para outros tipos de erros
+        throw new Error('Erro ao processar a solicitação');
+      }
     }
   }
 }

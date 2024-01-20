@@ -25,7 +25,7 @@ export class LoginComponent {
     this.showLogin.emit(false);
   }
 
-  handleAuth() {
+  async handleAuth() {
     if (this.loginForm.invalid) {
       this.hasError = 'Preencha as suas credencias';
       return;
@@ -36,6 +36,11 @@ export class LoginComponent {
       senha: this.loginForm.value.senha!,
     };
 
-    this.authService.authUser(user);
+    const isAuth = await this.authService.authUser(user);
+    if (isAuth) {
+      console.log('autenticado');
+    } else {
+      this.hasError = 'Credencias inválidas, por favor tente novamente!';
+    }
   }
 }
