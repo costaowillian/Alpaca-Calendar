@@ -14,6 +14,7 @@ import { FormGroup } from '@angular/forms';
 import bootstrap5Plugin from '@fullcalendar/bootstrap5';
 import { EventServiceService } from 'src/app/services/event-service.service';
 import { IEvent } from 'src/app/models/event';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-calendar',
@@ -50,7 +51,8 @@ export class CalendarComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private alertService: AlertModalServiceService,
-    private eventService: EventServiceService
+    private eventService: EventServiceService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit(): void {
@@ -98,7 +100,7 @@ export class CalendarComponent implements OnInit {
           form.value.end,
           selectInfo.allDay
         ),
-        _userId: '65a9bd66eb7d9fc9360dbd55',
+        _userId: "",
       };
 
       const result = await this.eventService.createEvent(event, '1');
@@ -110,10 +112,19 @@ export class CalendarComponent implements OnInit {
           start: result.start,
           end: result.end,
         });
+        this.showSuccess('Sucesso', 'Evento adicionadoa a agenda!');
       } else if (result == 'data duplicada') {
-        //this.alertService.ShowConfirm();
+        this.showError('Falha ao criar', 'Já existe um evento nesse horario!');
       }
     });
+  }
+
+  showSuccess(title: string, message: string) {
+    this.toastr.success(message, title);
+  }
+
+  showError(title: string, message: string) {
+    this.toastr.error(message, title);
   }
 
   // Formatar data e hora para o formato desejado

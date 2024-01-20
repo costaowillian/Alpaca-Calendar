@@ -16,6 +16,7 @@ import { ModalModule } from 'ngx-bootstrap/modal';
 import { LoginComponent } from './components/forms/login/login.component';
 import { SingupComponent } from './components/forms/singup/singup.component';
 import { AccessPageComponent } from './screens/access-page/access-page.component';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -40,7 +41,8 @@ import { AccessPageComponent } from './screens/access-page/access-page.component
     TooltipModule.forRoot(),
     BrowserAnimationsModule,
     ModalModule.forRoot(),
-    BrowserAnimationsModule
+    BrowserAnimationsModule,
+    ToastrModule.forRoot(),
   ],
   providers: [],
   bootstrap: [AppComponent],
