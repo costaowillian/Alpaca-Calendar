@@ -61,11 +61,8 @@ export class CalendarComponent implements OnInit {
 
   // Obtendo eventos do serviço
   async handleGetEvents() {
-    const events = await this.eventService.getAllEvents('1', '2');
-    if (!events) {
-      location.reload();
-    }
-
+    const events = await this.eventService.getAllEvents();
+  
     // Mapeando os eventos e renomeando a propriedade 'description' para 'title'
     const eventsWithTitle = events.map((event) => ({
       ...event,
@@ -103,7 +100,7 @@ export class CalendarComponent implements OnInit {
         _userId: "",
       };
 
-      const result = await this.eventService.createEvent(event, '1');
+      const result = await this.eventService.createEvent(event);
 
       if (result && typeof result !== 'string') {
         calendarApi.addEvent({

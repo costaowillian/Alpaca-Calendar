@@ -1,3 +1,4 @@
+import { AuthService } from 'src/app/services/auth.service';
 import { IEvent } from './../models/event';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
@@ -8,10 +9,14 @@ import { apiUrl } from './helper';
 })
 // Serviço responsável por lidar com operações relacionadas a eventos
 export class EventServiceService {
-  constructor() {}
+  constructor(private authService: AuthService) {}
 
   // Método para obter todos os eventos de um usuário
-  async getAllEvents(userId: string, token: string): Promise<IEvent[]> {
+  async getAllEvents(): Promise<IEvent[]> {
+
+    const userId = this.authService.getAuthorizationToken('user');
+    const token = this.authService.getAuthorizationToken('token');
+
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'get',
@@ -37,7 +42,10 @@ export class EventServiceService {
   }
 
   // Método para criar um evento
-  async createEvent(params: IEvent, token: string): Promise<IEvent | string> {
+  async createEvent(params: IEvent): Promise<IEvent | string> {
+
+    const token = this.authService.getAuthorizationToken('token');
+    
     // Convertendo os parâmetros do evento para o formato JSON
     const data = JSON.stringify({
       _userId: params._userId,

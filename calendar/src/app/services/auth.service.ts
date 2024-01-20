@@ -21,9 +21,9 @@ export class AuthService {
     );
   }
 
-  getAuthorizationToken(): string {
-    const token = this.decrypt(window.localStorage.getItem('token') || '');
-    return token;
+  getAuthorizationToken(item:string): string {
+    const localItem = this.decrypt(window.localStorage.getItem(item) || '');
+    return localItem;
   }
 
   async authUser(user: IUserCredentials): Promise<boolean> {
@@ -43,7 +43,7 @@ export class AuthService {
   }
 
   isUserLoggedIn() {
-    const token = this.getAuthorizationToken();
+    const token = this.getAuthorizationToken('token');
     if (!token) {
       return false;
     }
