@@ -1,4 +1,8 @@
-import { IUser, IUserCredentials } from './../models/user';
+import {
+  ICreateUserCredentials,
+  IUser,
+  IUserCredentials,
+} from './../models/user';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { apiUrl } from './helper';
@@ -9,13 +13,42 @@ import { apiUrl } from './helper';
 export class UserService {
   constructor() {}
 
-  async createuser(user: )Promise<IUser | string> {
+  async createuser(user: ICreateUserCredentials): Promise<boolean> {
+    // Convertendo os parâmetros do usuário para o formato JSON
+    const data = JSON.stringify({
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      password: user.senha,
+    });
 
+    // Configuração para a requisição HTTP usando Axios
+    const axiosConfig = {
+      method: 'post',
+      url: `${apiUrl}/users/create-user`,
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    };
+
+    try {
+      // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error
+      const response = await axios.request(axiosConfig);
+
+      //Se retorna HTTP 200 faz a autenticação do usuário no sistema
+      if (response.status == 201) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
   }
 
   async getUserData(user: IUserCredentials): Promise<IUser | string> {
     // Convertendo os parâmetros do usuário para o formato JSON
-    console.log({ inuserService: user });
     const data = JSON.stringify({
       email: user.email,
       password: user.senha,
@@ -32,9 +65,8 @@ export class UserService {
     };
 
     try {
-      // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
+      // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso
       const response = await axios.request(axiosConfig);
-      console.log('tste' + response.status, response.data);
 
       if (response.status == 200) {
         const user = {

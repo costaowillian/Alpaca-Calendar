@@ -3,7 +3,7 @@
     <h5 class=" card-title">Crie sua conta</h5>
     <p class="card-text">Tenha seus eventos e reuniões organizadas por data e hora!
     </p>
-    <form [formGroup]="signUpForm">
+    <form [formGroup]="signUpForm" (ngSubmit)="handleCreateUser()">
       <div class="mb-3 text-start">
         <label for="nome" class="form-label">
           Nome</label>
@@ -64,7 +64,10 @@
           </label>
         </div>
       </div>
-      <button type="button" class="btn btn-primary">Cadastrar</button>
+      <div *ngIf="hasError">
+        <p class="error-message">{{ hasError }}</p>
+      </div>
+      <button type="submit" class="btn btn-primary">Cadastrar</button>
     </form>
     <div class="mb-3">
       <p>AJá tem uma conta? <a class="redirect" type="button" (click)="handleOnClick()">Fazer login</a></p>
