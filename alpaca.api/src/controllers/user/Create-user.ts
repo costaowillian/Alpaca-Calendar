@@ -2,7 +2,7 @@ import validator from "validator";
 import bcrypt from "bcrypt";
 
 import { IUser } from "../../interfaces/User";
-import { badRequest, created, serverError } from "../Helpers";
+import { badRequest, created, objectNotCreated, serverError } from "../Helpers";
 import { IController, HttpRequest, HttpResponse } from "../Protocols";
 import {
   CreateUserParams,
@@ -44,7 +44,7 @@ export class CreateUserController implements IController {
       );
 
       if (await userExists) {
-        return badRequest("Please use another email!");
+        return objectNotCreated("Please use another email!");
       }
 
       // Gera um salt e realiza o hash da senha
