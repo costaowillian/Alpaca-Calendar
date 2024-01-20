@@ -7,7 +7,16 @@ export interface IUser {
   email: string;
 }
 
+// Interface que define a estrutura dos dados de autenticação de um usuário
 export interface IUserCredentials {
+  email: string;
+  senha: string;
+}
+
+// Interface que define a estrutura dos dados de criação de um usuário
+export interface ICreateUserCredentials {
+  firstName: string;
+  lastName: string;
   email: string;
   senha: string;
 }

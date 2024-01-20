@@ -9,6 +9,10 @@ import { apiUrl } from './helper';
 export class UserService {
   constructor() {}
 
+  async createuser(user: )Promise<IUser | string> {
+
+  }
+
   async getUserData(user: IUserCredentials): Promise<IUser | string> {
     // Convertendo os parâmetros do usuário para o formato JSON
     console.log({ inuserService: user });
