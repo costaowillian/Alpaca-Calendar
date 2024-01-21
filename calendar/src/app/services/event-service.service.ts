@@ -146,12 +146,12 @@ export class EventServiceService {
     try {
       // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
       const response = await axios.request(axiosConfig);
-      if (response.status == 201) {
+      if (response.status == 200) {
         return response.data;
       } else {
         // Tratando diferentes códigos de status
         if (response.status == 422) {
-          return 'erro 422';
+          return 'error 422';
         } else {
           return 'error 422';
         }
@@ -161,7 +161,7 @@ export class EventServiceService {
       if (axios.isAxiosError(error) && error.response) {
         // Se for um erro Axios com resposta, trate o código de status aqui
         if (error.response.status === 422) {
-          return 'erro 422';
+          return 'error 422';
         } else {
           console.log(`Erro na solicitação com status ${error.response.data}`);
           throw new Error(

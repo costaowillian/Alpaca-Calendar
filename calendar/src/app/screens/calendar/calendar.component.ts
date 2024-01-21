@@ -192,13 +192,13 @@ export class CalendarComponent implements OnInit {
 
       //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
       const result = await this.eventService.patchEvent(event!);
-
+      console.log({ result });
       if (result && typeof result !== 'string') {
         this.showSuccess('Sucesso', 'Evento atualizado a agenda!');
         setTimeout(() => {
           location.reload();
         }, 1000);
-      } else if (result == 'erro 422') {
+      } else if (result == 'error 422') {
         this.showError(
           'Falha ao atualizar',
           'Já existe um evento nesse horario!'

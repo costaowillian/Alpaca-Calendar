@@ -57,7 +57,6 @@ export class UpdateEventController implements IController {
       const isEvent = await this.eventService.updateEvent({
         updatedBody
       });
-      console.log(isEvent);
 
       let event: IEvent;
       // Se existir, verifica o tipo retornado

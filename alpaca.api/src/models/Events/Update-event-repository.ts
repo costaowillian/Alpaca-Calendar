@@ -20,7 +20,7 @@ export class MongoUpdateEventRepository implements IUpdateEventRepository {
       },
       {
         $set: {
-          paramsWithUserId
+          ...paramsWithUserId
         }
       }
     );
