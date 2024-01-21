@@ -97,7 +97,7 @@ export class EventServiceService {
   async deleteEvent(id: string): Promise<boolean> {
     //Pegando os dados do usuário logado
     const userData = this.getLoggedUserData();
-    
+
     //Configurações do axios
     const axiosConfig = {
       method: 'delete',
@@ -106,6 +106,7 @@ export class EventServiceService {
         Authorization: `Bearer ${userData.token}`,
       },
     };
+
 
     try {
       // Verificando o status da resposta e retornando em caso de sucesso
@@ -118,6 +119,58 @@ export class EventServiceService {
       }
     } catch (error) {
       return false;
+    }
+  }
+
+  async patchEvent(params: IEvent):  Promise<IEvent | string> {
+    const userData = this.getLoggedUserData();
+    const data = JSON.stringify({
+      _userId: userData.userId,
+      description: params.description,
+      start: params.start,
+      end: params.end,
+    });
+
+    // Configuração para a requisição HTTP usando Axios
+    const axiosConfig = {
+      method: 'post',
+      maxBodyLength: Infinity,
+      url: `${apiUrl}/events/update`,
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+        'Content-Type': 'application/json',
+      },
+      data: data,
+    };
+
+    try {
+      // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
+      const response = await axios.request(axiosConfig);
+      if (response.status == 201) {
+        return response.data;
+      } else {
+        // Tratando diferentes códigos de status
+        if (response.status == 422) {
+          return 'erro 422';
+        } else {
+          return 'error 422';
+        }
+      }
+    } catch (error) {
+      // Capturando erros de rede, timeout, etc.
+      if (axios.isAxiosError(error) && error.response) {
+        // Se for um erro Axios com resposta, trate o código de status aqui
+        if (error.response.status === 422) {
+          return 'erro 422';
+        } else {
+          throw new Error(
+            `Erro na solicitação com status ${error.response.status}`
+          );
+        }
+      } else {
+        // Tratamento para outros tipos de erros
+        throw new Error('Erro ao processar a solicitação');
+      }
     }
   }
 

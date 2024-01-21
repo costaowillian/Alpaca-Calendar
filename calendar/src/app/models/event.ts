@@ -4,5 +4,5 @@ export interface IEvent {
   description: string;
   start: string;
   end: string;
-  _userId: string;
+  _userId?: string;
 }

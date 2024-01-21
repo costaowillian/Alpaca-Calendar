@@ -56,13 +56,13 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" (click)="onClose()">Cancelar</button>
 
         <!-- Verifica se existe description, start e end para exibir os botões de editar e excluir -->
-        <ng-container *ngIf="description && start && end">
+        <ng-container *ngIf="toEdit">
           <button type="button" class="btn btn-danger" (click)="showConfirm()">Excluir</button>
           <button type="submit" class="btn btn-warning">Editar</button>
         </ng-container>
 
         <!-- Botão para enviar (aparece somente se não houver informações para editar) -->
-        <button type="submit" class="btn btn-primary" *ngIf="!(description && start && end)">Enviar</button>
+        <button type="submit" class="btn btn-primary" *ngIf="!toEdit">Enviar</button>
       </div>
     </form>
   </div>

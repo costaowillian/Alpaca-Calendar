@@ -81,7 +81,7 @@ export class CalendarComponent implements OnInit {
   // Lidar com a seleção de datas no calendário
   handleDateSelect(selectInfo: DateSelectArg) {
     const calendarApi = selectInfo.view.calendar;
-    calendarApi.unselect(); // Limpar seleção de data
+    calendarApi.unselect(); // Limpar seleção de data]
 
     // Exibir modal para criar evento
     const resutl$ = this.alertService.ShowCreateEvent();
@@ -109,7 +109,7 @@ export class CalendarComponent implements OnInit {
           start: result.start,
           end: result.end,
         });
-        this.showSuccess('Sucesso', 'Evento adicionadoa a agenda!');
+        this.showSuccess('Sucesso', 'Evento adicionado a agenda!');
       } else if (result == 'erro 422') {
         this.showError('Falha ao criar', 'Já existe um evento nesse horario!');
       }
@@ -144,16 +144,7 @@ export class CalendarComponent implements OnInit {
     return newDate;
   }
 
-  // handleEventClick(clickInfo: EventClickArg) {
-  //   if (
-  //     confirm(
-  //       `Are you sure you want to delete the event '${clickInfo.event.title}'`
-  //     )
-  //   ) {
-  //     clickInfo.event.remove();
-  //   }
-  // }
-
+  //Método para converter Date para string
   convertToHourString(hour: Date) {
     return `${hour?.getHours().toLocaleString().padStart(2, '0')}:${hour
       ?.getMinutes()
@@ -161,19 +152,59 @@ export class CalendarComponent implements OnInit {
       .padStart(2, '0')}`;
   }
 
+  // Função para formatar a data
+  formatDateString(date: Date): string {
+    const year = date.getFullYear();
+    const month = (date.getMonth() + 1).toString().padStart(2, '0');
+    const day = date.getDate().toString().padStart(2, '0');
+
+    return `${year}-${month}-${day}`;
+  }
+
   // Lidar com o clique em eventos no calendário e abre o modal apra edição ou exclusão!
   handleEventClick(clickInfo: EventClickArg) {
     const eventTitle = clickInfo.event.title;
-    const eventStart = clickInfo.event.start;
-    const eventEnd = clickInfo.event.end;
+    const eventStart = this.formatDateString(clickInfo.event.start!);
+    const eventEnd = this.formatDateString(clickInfo.event.end!);
     const id = clickInfo.event.id;
 
+    console.log({ calendar: clickInfo.event.start?.toString() });
+
+    // Chama modal para edição.
     const resutl$ = this.alertService.ShowEditEvent(
       eventTitle,
-      this.convertToHourString(eventStart!),
-      this.convertToHourString(eventEnd!),
+      this.convertToHourString(clickInfo.event.start!),
+      this.convertToHourString(clickInfo.event.end!),
       id
     );
+
+    // Assinar resultados do modal
+    resutl$.asObservable().subscribe(async (form: FormGroup) => {
+      let event: IEvent;
+      // Adicionar evento ao calendário ebanco de dados
+      if (eventStart && eventEnd) {
+        event = {
+          description: form.value.description,
+          start: this.formatDate(eventStart, form.value.start, false),
+          end: this.formatDate(eventEnd, form.value.end, false),
+          _userId: '',
+        };
+      }
+      //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
+      const result = await this.eventService.patchEvent(event!);
+
+      if (result && typeof result !== 'string') {
+        this.showSuccess('Sucesso', 'Evento atualizado a agenda!');
+        setTimeout(() => {
+          location.reload();
+        }, 1000);
+      } else if (result == 'erro 422') {
+        this.showError(
+          'Falha ao atualizar',
+          'Já existe um evento nesse horario!'
+        );
+      }
+    });
   }
 
   // Lidar com a atualização de eventos no calendário

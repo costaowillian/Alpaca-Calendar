@@ -1,9 +1,5 @@
 import { Component, Input } from '@angular/core';
-import {
-  FormBuilder,
-  FormGroup,
-  Validators,
-} from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { EMPTY, Subject, switchMap, take } from 'rxjs';
 import { AlertModalServiceService } from '../modal-service.service';
@@ -26,6 +22,7 @@ export class CreateEventComponent {
   // Mensagem de erro, formulário do evento e resultado da criação
   hasError: string;
   hasMissingFields: string;
+  toEdit: boolean;
 
   createResult!: Subject<FormGroup>;
   deleteResult!: Subject<boolean>;
@@ -46,11 +43,20 @@ export class CreateEventComponent {
   ) {
     this.hasError = '';
     this.hasMissingFields = '';
+    this.toEdit = false;
   }
 
   ngOnInit() {
     this.createResult = new Subject();
     this.deleteResult = new Subject();
+    this.onEdit();
+  }
+
+  //Método para verificar se é edição
+  onEdit() {
+    if (this.eventoForm.value) {
+      this.toEdit = true;
+    }
   }
 
   // Método chamado quando o modal é fechado sem confirmação
