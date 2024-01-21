@@ -57,7 +57,7 @@
 
         <!-- Verifica se existe description, start e end para exibir os botões de editar e excluir -->
         <ng-container *ngIf="description && start && end">
-          <button type="button" class="btn btn-danger">Excluir</button>
+          <button type="button" class="btn btn-danger" (click)="showConfirm()">Excluir</button>
           <button type="submit" class="btn btn-warning">Editar</button>
         </ng-container>
 

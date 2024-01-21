@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
 import { Subject } from 'rxjs';
+import { AlertModalServiceService } from '../modal-service.service';
 
 @Component({
   selector: 'app-create-event',
@@ -23,7 +24,7 @@ export class CreateEventComponent {
   hasError: string;
   hasMissingFields: string;
 
-  createResult!: Subject<FormGroup>;
+  createResult!: Subject<FormGroup | boolean>;
   //formulário de criação de envento
   eventoForm = this.fb.group({
     description: ['', [Validators.required]],
@@ -31,7 +32,7 @@ export class CreateEventComponent {
     end: ['', [Validators.required]],
   });
 
-  constructor(public bsModalRef: BsModalRef, private fb: FormBuilder) {
+  constructor(public bsModalRef: BsModalRef, private fb: FormBuilder, private alertService: AlertModalServiceService) {
     this.hasError = '';
     this.hasMissingFields = '';
   }
@@ -51,11 +52,20 @@ export class CreateEventComponent {
       this.hasMissingFields = 'Preencha todos os campos'
       return;
     }
+    this.crateAndClose()
   }
 
   // Método privado para realizar a criação e fechar o modal
-  private crateAndClose(value: boolean) {
+  private crateAndClose() {
     this.createResult.next(this.eventoForm);
     this.bsModalRef.hide();
   }
-}
+
+  showConfirm() {
+    const message = `tem certeza que deseja deletar o evento ${this.description}`;
+    const resutl$ = this.alertService.ShowConfirm('Deletar evento!', message);
+    if(resutl$) {
+      this.createResult.next(true);
+      this.bsModalRef.hide();
+    }
+  }}
