@@ -3,6 +3,7 @@ import { IEvent } from './../models/event';
 import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { apiUrl } from './helper';
+import { ILoggedUserData } from '../models/user';
 
 @Injectable({
   providedIn: 'root',
@@ -13,15 +14,14 @@ export class EventServiceService {
 
   // Método para obter todos os eventos de um usuário
   async getAllEvents(): Promise<IEvent[]> {
-    const userId = this.authService.getAuthorizationToken('user');
-    const token = this.authService.getAuthorizationToken('token');
+    const userData = this.getLoggedUserData();
 
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'get',
-      url: `${apiUrl}/events/get-all/${userId}`,
+      url: `${apiUrl}/events/get-all/${userData.userId}`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userData.token}`,
       },
     };
 
@@ -35,19 +35,16 @@ export class EventServiceService {
         throw new Error('Erro ao obter eventos');
       }
     } catch (error) {
-      console.error('Error', error);
       throw error;
     }
   }
 
   // Método para criar um evento
   async createEvent(params: IEvent): Promise<IEvent | string> {
-    const userId = this.authService.getAuthorizationToken('user');
-    const token = this.authService.getAuthorizationToken('token');
-    console.log('id ' + userId + ' token ' + token);
+    const userData = this.getLoggedUserData();
     // Convertendo os parâmetros do evento para o formato JSON
     const data = JSON.stringify({
-      _userId: userId,
+      _userId: userData.userId,
       description: params.description,
       start: params.start,
       end: params.end,
@@ -60,7 +57,7 @@ export class EventServiceService {
       maxBodyLength: Infinity,
       url: `${apiUrl}/events/create`,
       headers: {
-        Authorization: `Bearer ${token}`,
+        Authorization: `Bearer ${userData.token}`,
         'Content-Type': 'application/json',
       },
       data: data,
@@ -96,5 +93,43 @@ export class EventServiceService {
         throw new Error('Erro ao processar a solicitação');
       }
     }
+  }
+
+  //Método para deletar um evento.
+  async deleteEvet(): Promise<boolean> {
+    //Pegando os dados do usuário logado
+    const userData = this.getLoggedUserData();
+
+    //Configurações do axios
+    const axiosConfig = {
+      method: 'delete',
+      url: `${apiUrl}/events/delete/${userData.userId}`,
+      headers: {
+        Authorization: `Bearer ${userData.token}`,
+      },
+    };
+
+    try {
+      // Verificando o status da resposta e retornando em caso de sucesso
+      const response = await axios.request(axiosConfig);
+
+      if (response.status == 200) {
+        return true;
+      } else {
+        return false;
+      }
+    } catch (error) {
+      return false;
+    }
+  }
+
+  //metodo para pegar os dados necessários nas requisições.
+  getLoggedUserData(): ILoggedUserData {
+    const userId = this.authService.getAuthorizationToken('user');
+    const token = this.authService.getAuthorizationToken('token');
+    return {
+      userId: userId,
+      token: token,
+    };
   }
 }

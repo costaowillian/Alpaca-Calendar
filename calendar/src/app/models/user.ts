@@ -20,3 +20,9 @@ export interface ICreateUserCredentials {
   email: string;
   senha: string;
 }
+
+// Interface que define a estrutura dos dados em localstorage de um usuário
+export interface ILoggedUserData {
+  userId: string;
+  token: string;
+}
