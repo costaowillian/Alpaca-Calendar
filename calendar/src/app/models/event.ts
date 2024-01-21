@@ -6,3 +6,8 @@ export interface IEvent {
   end: string;
   _userId?: string;
 }
+
+export interface ICreateEvent {
+  start: string;
+  end: string;
+}

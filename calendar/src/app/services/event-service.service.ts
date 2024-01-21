@@ -4,6 +4,7 @@ import { Injectable } from '@angular/core';
 import axios from 'axios';
 import { apiUrl } from './helper';
 import { ILoggedUserData } from '../models/user';
+import da from '@mobiscroll/angular/dist/js/i18n/da';
 
 @Injectable({
   providedIn: 'root',
@@ -131,6 +132,9 @@ export class EventServiceService {
       end: params.end,
     });
 
+    console.log({ data });
+
+    console.log(params);
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
       method: 'patch',
@@ -146,6 +150,7 @@ export class EventServiceService {
     try {
       // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
       const response = await axios.request(axiosConfig);
+      console.log({ response });
       if (response.status == 200) {
         return response.data;
       } else {

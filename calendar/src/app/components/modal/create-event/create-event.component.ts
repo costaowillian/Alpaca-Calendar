@@ -17,6 +17,8 @@ export class CreateEventComponent {
   @Input() description: string = '';
   @Input() start: string = '';
   @Input() end: string = '';
+  @Input() startDate: string = '';
+  @Input() endDate: string = '';
   @Input() id: string = '';
 
   // Mensagem de erro, formulário do evento e resultado da criação

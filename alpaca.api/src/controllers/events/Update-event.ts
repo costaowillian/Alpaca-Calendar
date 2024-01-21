@@ -65,6 +65,7 @@ export class UpdateEventController implements IController {
         if (isEvent.id == id) {
           // Chama o método do repositório para atualizar o evento
           event = await this.updateEventRepository.update(id, updatedBody);
+          console.log({ event });
         } else {
           //retorna erro HTTP 422 caso o id não seja o mesmo
           return objectNotCreated(

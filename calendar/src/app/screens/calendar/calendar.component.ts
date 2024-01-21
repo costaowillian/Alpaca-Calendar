@@ -41,8 +41,10 @@ export class CalendarComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    displayEventEnd: true,
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
+    eventDrop: this.handleEventDrop.bind(this),
     eventsSet: this.handleEvents.bind(this),
     contentHeight: 'auto',
   });
@@ -78,13 +80,31 @@ export class CalendarComponent implements OnInit {
     this.calendarVisible.update((bool) => !bool);
   }
 
+  async handleEventDrop(info: { event: EventApi }) {
+    // Adicionar evento ao calendário e banco de dados
+    const event = {
+      id: info.event.id,
+      description: info.event.title,
+      start: info.event.startStr,
+      end: info.event.endStr,
+      _userId: '',
+    };
+    console.log(event);
+
+    await this.handleEditEvent(event);
+  }
+
   // Lidar com a seleção de datas no calendário
   handleDateSelect(selectInfo: DateSelectArg) {
+    console.log(selectInfo);
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // Limpar seleção de data]
 
     // Exibir modal para criar evento
-    const resutl$ = this.alertService.ShowCreateEvent();
+    const resutl$ = this.alertService.ShowCreateEvent({
+      start: selectInfo.start.toLocaleDateString(),
+      end: selectInfo.end.toLocaleDateString(),
+    });
 
     // Assinar resultados do modal
     resutl$.asObservable().subscribe(async (form: FormGroup) => {
@@ -173,7 +193,11 @@ export class CalendarComponent implements OnInit {
       eventTitle,
       this.convertToHourString(clickInfo.event.start!),
       this.convertToHourString(clickInfo.event.end!),
-      id
+      id,
+      {
+        start: clickInfo.event.start!.toLocaleDateString(),
+        end: clickInfo.event.end!.toLocaleDateString(),
+      }
     );
 
     // Assinar resultados do modal
@@ -190,26 +214,31 @@ export class CalendarComponent implements OnInit {
         };
       }
 
-      //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
-      const result = await this.eventService.patchEvent(event!);
-      console.log({ result });
-      if (result && typeof result !== 'string') {
-        this.showSuccess('Sucesso', 'Evento atualizado a agenda!');
-        setTimeout(() => {
-          location.reload();
-        }, 1000);
-      } else if (result == 'error 422') {
-        this.showError(
-          'Falha ao atualizar',
-          'Já existe um evento nesse horario!'
-        );
-      }
+      this.handleEditEvent(event!);
     });
+  }
+
+  //Métodi para editar o evento!
+  async handleEditEvent(event: IEvent) {
+    //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
+    const result = await this.eventService.patchEvent(event);
+    console.log(result);
+    if (result && typeof result !== 'string') {
+      this.showSuccess('Sucesso', 'Evento atualizado na agenda!');
+      setTimeout(() => {
+        location.reload();
+      }, 1000);
+    } else if (result == 'error 422') {
+      this.showError(
+        'Falha ao atualizar',
+        'Já existe um evento nesse horario!'
+      );
+    }
   }
 
   // Lidar com a atualização de eventos no calendário
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
-    this.changeDetector.detectChanges(); // workaround for pressionChangedAfterItHasBeenCheckedError
+    this.changeDetector.detectChanges();
   }
 }
