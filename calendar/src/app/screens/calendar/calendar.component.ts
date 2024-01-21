@@ -168,10 +168,11 @@ export class CalendarComponent implements OnInit {
     const eventEnd = clickInfo.event.end;
     const id = clickInfo.event.id;
 
-    this.alertService.ShowEditEvent(
+    const resutl$ = this.alertService.ShowEditEvent(
       eventTitle,
       this.convertToHourString(eventStart!),
-      this.convertToHourString(eventEnd!)
+      this.convertToHourString(eventEnd!),
+      id
     );
   }
 

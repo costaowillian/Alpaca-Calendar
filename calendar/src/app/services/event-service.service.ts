@@ -49,7 +49,6 @@ export class EventServiceService {
       start: params.start,
       end: params.end,
     });
-    console.log(data);
 
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
@@ -66,7 +65,6 @@ export class EventServiceService {
     try {
       // Verificando o status da resposta e retorna os dados da resposta em caso de sucesso ou error em caso de data duplicada
       const response = await axios.request(axiosConfig);
-      console.log(response);
       if (response.status == 201) {
         return response.data;
       } else {
@@ -96,14 +94,14 @@ export class EventServiceService {
   }
 
   //Método para deletar um evento.
-  async deleteEvet(): Promise<boolean> {
+  async deleteEvent(id: string): Promise<boolean> {
     //Pegando os dados do usuário logado
     const userData = this.getLoggedUserData();
-
+    
     //Configurações do axios
     const axiosConfig = {
       method: 'delete',
-      url: `${apiUrl}/events/delete/${userData.userId}`,
+      url: `${apiUrl}/events/delete/${id}`,
       headers: {
         Authorization: `Bearer ${userData.token}`,
       },

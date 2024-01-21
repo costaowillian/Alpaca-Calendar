@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { ChangeDetectorRef, Component, Input } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
@@ -6,8 +6,11 @@ import {
   Validators,
 } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { Subject } from 'rxjs';
+import { EMPTY, Subject, empty, switchMap, take } from 'rxjs';
 import { AlertModalServiceService } from '../modal-service.service';
+import { EventServiceService } from 'src/app/services/event-service.service';
+import { ToastrService } from 'ngx-toastr';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-create-event',
@@ -19,6 +22,7 @@ export class CreateEventComponent {
   @Input() description: string = '';
   @Input() start: string = '';
   @Input() end: string = '';
+  @Input() id: string = '';
 
   // Mensagem de erro, formulário do evento e resultado da criação
   hasError: string;
@@ -36,7 +40,11 @@ export class CreateEventComponent {
   constructor(
     public bsModalRef: BsModalRef,
     private fb: FormBuilder,
-    private alertService: AlertModalServiceService
+    private alertService: AlertModalServiceService,
+    private eventService: EventServiceService,
+    private toastr: ToastrService,
+    private cdr: ChangeDetectorRef,
+    private router: Router
   ) {
     this.hasError = '';
     this.hasMissingFields = '';
@@ -45,6 +53,7 @@ export class CreateEventComponent {
   ngOnInit() {
     this.createResult = new Subject();
     this.deleteResult = new Subject();
+    this.cdr.detectChanges();
   }
 
   // Método chamado quando o modal é fechado sem confirmação
@@ -67,14 +76,48 @@ export class CreateEventComponent {
     this.bsModalRef.hide();
   }
 
+  // Método para exibir o popup de confirmação de exclusão
   showConfirm() {
     const message = `Tem certeza que deseja deletar o evento ${this.description}`;
     const resutl$ = this.alertService.ShowConfirm('Deletar evento!', message);
-    if (resutl$) {
-      this.deleteResult.next(true);
-      this.bsModalRef.hide();
-    } else {
-      this.bsModalRef.hide();
-    }
+
+    resutl$
+      .asObservable()
+      .pipe(
+        take(1),
+        switchMap((resutl) =>
+          resutl ? this.eventService.deleteEvent(this.id) : EMPTY
+        )
+      )
+      .subscribe(
+        (succes) => {
+          // Ação a ser realizada após a exclusão bem-sucedida e um timeout de 1 segundo
+          this.showSuccess('Tudo certo', 'O evento foi deletado com sucesso');
+          this.bsModalRef.hide();
+          // Redirecionamento e recarregamento da página após 1 segundo
+          setTimeout(() => {
+            this.router.navigate(['']);
+            location.reload();
+          }, 1000);
+        },
+        (error) => {
+          // Ação a ser realizada em caso de erro durante a exclusão
+          this.showError(
+            'Falha ao deletar',
+            'O evento não foi deletado, por favor tente novamente!'
+          );
+          this.bsModalRef.hide();
+        }
+      );
+  }
+
+  // Método para exibir uma mensagem de sucesso usando o Toastr
+  showSuccess(title: string, message: string) {
+    this.toastr.success(message, title);
+  }
+
+  // Método para exibir uma mensagem de erro usando o Toastr
+  showError(title: string, message: string) {
+    this.toastr.error(message, title);
   }
 }
