@@ -168,8 +168,6 @@ export class CalendarComponent implements OnInit {
     const eventEnd = this.formatDateString(clickInfo.event.end!);
     const id = clickInfo.event.id;
 
-    console.log({ calendar: clickInfo.event.start?.toString() });
-
     // Chama modal para edição.
     const resutl$ = this.alertService.ShowEditEvent(
       eventTitle,
@@ -184,14 +182,17 @@ export class CalendarComponent implements OnInit {
       // Adicionar evento ao calendário ebanco de dados
       if (eventStart && eventEnd) {
         event = {
+          id: id,
           description: form.value.description,
           start: this.formatDate(eventStart, form.value.start, false),
           end: this.formatDate(eventEnd, form.value.end, false),
           _userId: '',
         };
       }
+
       //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
       const result = await this.eventService.patchEvent(event!);
+      console.log(result);
 
       if (result && typeof result !== 'string') {
         this.showSuccess('Sucesso', 'Evento atualizado a agenda!');

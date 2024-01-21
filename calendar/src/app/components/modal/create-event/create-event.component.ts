@@ -54,7 +54,7 @@ export class CreateEventComponent {
 
   //Método para verificar se é edição
   onEdit() {
-    if (this.eventoForm.value) {
+    if (this.eventoForm.valid) {
       this.toEdit = true;
     }
   }

@@ -107,7 +107,6 @@ export class EventServiceService {
       },
     };
 
-
     try {
       // Verificando o status da resposta e retornando em caso de sucesso
       const response = await axios.request(axiosConfig);
@@ -122,9 +121,10 @@ export class EventServiceService {
     }
   }
 
-  async patchEvent(params: IEvent):  Promise<IEvent | string> {
+  async patchEvent(params: IEvent): Promise<IEvent | string> {
     const userData = this.getLoggedUserData();
     const data = JSON.stringify({
+      id: params.id,
       _userId: userData.userId,
       description: params.description,
       start: params.start,
@@ -133,7 +133,7 @@ export class EventServiceService {
 
     // Configuração para a requisição HTTP usando Axios
     const axiosConfig = {
-      method: 'post',
+      method: 'patch',
       maxBodyLength: Infinity,
       url: `${apiUrl}/events/update`,
       headers: {
@@ -163,8 +163,9 @@ export class EventServiceService {
         if (error.response.status === 422) {
           return 'erro 422';
         } else {
+          console.log(`Erro na solicitação com status ${error.response.data}`);
           throw new Error(
-            `Erro na solicitação com status ${error.response.status}`
+            `Erro na solicitação com status ${error.response.data}`
           );
         }
       } else {
