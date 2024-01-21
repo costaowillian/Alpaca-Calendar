@@ -39,13 +39,13 @@ export class AlertModalServiceService {
 
   ShowEditEvent(
     description: string,
-    strat: string,
+    start: string,
     end: string,
     id: string
   ): Subject<FormGroup> {
     const bsModalRef: BsModalRef = this.modalService.show(CreateEventComponent);
     bsModalRef.content.description = description;
-    bsModalRef.content.start = strat;
+    bsModalRef.content.start = start;
     bsModalRef.content.end = end;
     bsModalRef.content.id = id;
 

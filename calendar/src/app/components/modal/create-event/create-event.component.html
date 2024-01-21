@@ -7,7 +7,7 @@
     <form [formGroup]="eventoForm" (ngSubmit)="onConfirm()">
       <div class="mb-3">
         <label for="description" class="col-form-label">Descrição do evento:</label>
-        <input type="text" class="form-control" id="description" formControlName="description" [value]="description"
+        <input type="text" class="form-control" id="description" formControlName="description" [(ngModel)]="description"
           [class.valid]="eventoForm.controls['description'].valid"
           [class.invalid]="eventoForm.controls['description'].invalid && eventoForm.controls['description'].touched || eventoForm.controls['description'].dirty">
         <div
@@ -19,7 +19,7 @@
       </div>
       <div class="mb-3">
         <label for="start" class="col-form-label">Hora de início:</label>
-        <input type="time" class="form-control" id="start" formControlName="start" [value]="start"
+        <input type="time" class="form-control" id="start" formControlName="start" [(ngModel)]="start"
           [class.valid]="eventoForm.controls['start'].valid"
           [class.invalid]="eventoForm.controls['start'].invalid && eventoForm.controls['start'].touched || eventoForm.controls['start'].dirty">
         <div
@@ -31,7 +31,7 @@
       </div>
       <div class="mb-3">
         <label for="end" class="col-form-label">Hora de término:</label>
-        <input type="time" class="form-control" id="end" formControlName="end" [value]="end"
+        <input type="time" class="form-control" id="end" formControlName="end" [(ngModel)]="end"
           [class.valid]="eventoForm.controls['end'].valid"
           [class.invalid]="eventoForm.controls['end'].invalid && eventoForm.controls['end'].touched || eventoForm.controls['end'].dirty">
         <div

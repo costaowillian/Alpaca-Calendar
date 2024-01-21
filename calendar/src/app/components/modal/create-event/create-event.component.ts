@@ -1,12 +1,11 @@
-import { ChangeDetectorRef, Component, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import {
   FormBuilder,
-  FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
 import { BsModalRef } from 'ngx-bootstrap/modal';
-import { EMPTY, Subject, empty, switchMap, take } from 'rxjs';
+import { EMPTY, Subject, switchMap, take } from 'rxjs';
 import { AlertModalServiceService } from '../modal-service.service';
 import { EventServiceService } from 'src/app/services/event-service.service';
 import { ToastrService } from 'ngx-toastr';
@@ -43,7 +42,6 @@ export class CreateEventComponent {
     private alertService: AlertModalServiceService,
     private eventService: EventServiceService,
     private toastr: ToastrService,
-    private cdr: ChangeDetectorRef,
     private router: Router
   ) {
     this.hasError = '';
@@ -53,7 +51,6 @@ export class CreateEventComponent {
   ngOnInit() {
     this.createResult = new Subject();
     this.deleteResult = new Subject();
-    this.cdr.detectChanges();
   }
 
   // Método chamado quando o modal é fechado sem confirmação
