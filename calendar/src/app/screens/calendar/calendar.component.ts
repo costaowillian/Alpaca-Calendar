@@ -89,14 +89,12 @@ export class CalendarComponent implements OnInit {
       end: info.event.endStr,
       _userId: '',
     };
-    console.log(event);
 
     await this.handleEditEvent(event);
   }
 
   // Lidar com a seleção de datas no calendário
   handleDateSelect(selectInfo: DateSelectArg) {
-    console.log(selectInfo);
     const calendarApi = selectInfo.view.calendar;
     calendarApi.unselect(); // Limpar seleção de data]
 
@@ -222,7 +220,6 @@ export class CalendarComponent implements OnInit {
   async handleEditEvent(event: IEvent) {
     //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
     const result = await this.eventService.patchEvent(event);
-    console.log(result);
     if (result && typeof result !== 'string') {
       this.showSuccess('Sucesso', 'Evento atualizado na agenda!');
       setTimeout(() => {

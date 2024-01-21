@@ -72,6 +72,13 @@ export class UpdateEventController implements IController {
             "Event not created, there is an event with the same date and time"
           );
         }
+      } else if (!isEvent) {
+        event = await this.updateEventRepository.update(id, updatedBody);
+      } else {
+        //retorna erro HTTP 422 caso o id não seja o mesmo
+        return objectNotCreated(
+          "Event not created, there is an event with the same date and time"
+        );
       }
 
       // Retorna uma resposta HTTP 200 (OK) com o evento atualizado
