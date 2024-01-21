@@ -88,7 +88,7 @@ export class CalendarComponent implements OnInit {
 
     // Assinar resultados do modal
     resutl$.asObservable().subscribe(async (form: FormGroup) => {
-      // Adicionar evento ao calendário
+      // Adicionar evento ao calendário ebanco de dados
       const event: IEvent = {
         description: form.value.description,
         start: this.formatDate(selectInfo.startStr, form.value.start, false),

@@ -24,7 +24,8 @@ export class CreateEventComponent {
   hasError: string;
   hasMissingFields: string;
 
-  createResult!: Subject<FormGroup | boolean>;
+  createResult!: Subject<FormGroup>;
+  deleteResult!: Subject<boolean>;
   //formulário de criação de envento
   eventoForm = this.fb.group({
     description: ['', [Validators.required]],
@@ -32,13 +33,18 @@ export class CreateEventComponent {
     end: ['', [Validators.required]],
   });
 
-  constructor(public bsModalRef: BsModalRef, private fb: FormBuilder, private alertService: AlertModalServiceService) {
+  constructor(
+    public bsModalRef: BsModalRef,
+    private fb: FormBuilder,
+    private alertService: AlertModalServiceService
+  ) {
     this.hasError = '';
     this.hasMissingFields = '';
   }
 
   ngOnInit() {
     this.createResult = new Subject();
+    this.deleteResult = new Subject();
   }
 
   // Método chamado quando o modal é fechado sem confirmação
@@ -49,10 +55,10 @@ export class CreateEventComponent {
   // Método chamado quando o modal é confirmado
   onConfirm() {
     if (this.eventoForm.invalid) {
-      this.hasMissingFields = 'Preencha todos os campos'
+      this.hasMissingFields = 'Preencha todos os campos';
       return;
     }
-    this.crateAndClose()
+    this.crateAndClose();
   }
 
   // Método privado para realizar a criação e fechar o modal
@@ -62,10 +68,13 @@ export class CreateEventComponent {
   }
 
   showConfirm() {
-    const message = `tem certeza que deseja deletar o evento ${this.description}`;
+    const message = `Tem certeza que deseja deletar o evento ${this.description}`;
     const resutl$ = this.alertService.ShowConfirm('Deletar evento!', message);
-    if(resutl$) {
-      this.createResult.next(true);
+    if (resutl$) {
+      this.deleteResult.next(true);
+      this.bsModalRef.hide();
+    } else {
       this.bsModalRef.hide();
     }
-  }}
+  }
+}

@@ -28,7 +28,7 @@ export class ConfirmModalComponent implements OnInit {
     this.cloeAndConfirm(true);
   }
 
-  cloeAndConfirm(value: boolean): Promise<boolean> {
+  cloeAndConfirm(value: boolean) {
     this.createResult.next(value);
     this.bsModalRef.hide();
   }

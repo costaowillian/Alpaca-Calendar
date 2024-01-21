@@ -17,7 +17,7 @@ export class AlertModalServiceService {
     body: string,
     cancelTxt?: string,
     confirmTxt?: string
-  ): void {
+  ): Subject<boolean> {
     const bsModalRef: BsModalRef = this.modalService.show(
       ConfirmModalComponent
     );
@@ -28,6 +28,8 @@ export class AlertModalServiceService {
       bsModalRef.content.CancelText = cancelTxt;
       bsModalRef.content.OKText = confirmTxt;
     }
+
+    return (<ConfirmModalComponent>bsModalRef.content).createResult;
   }
 
   ShowCreateEvent(): Subject<FormGroup> {
