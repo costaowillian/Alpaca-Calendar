@@ -192,7 +192,6 @@ export class CalendarComponent implements OnInit {
 
       //Chama o serviço para atualizar o evento e verifica se retornou sucesso ou erro
       const result = await this.eventService.patchEvent(event!);
-      console.log(result);
 
       if (result && typeof result !== 'string') {
         this.showSuccess('Sucesso', 'Evento atualizado a agenda!');
