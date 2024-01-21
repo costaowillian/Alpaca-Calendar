@@ -25,7 +25,7 @@ export class CreateEventComponent {
 
   createResult!: Subject<FormGroup>;
   deleteResult!: Subject<boolean>;
-  
+
   //formulário de criação de envento
   eventoForm = this.fb.group({
     description: ['', [Validators.required]],
@@ -57,6 +57,16 @@ export class CreateEventComponent {
 
   // Método chamado quando o modal é confirmado
   onConfirm() {
+    const start = this.eventoForm.value.start!;
+    const end = this.eventoForm.value.end!;
+    const [hours1, minutes1] = start.split(':').map(Number);
+    const [hours2, minutes2] = end.split(':').map(Number);
+
+    if (hours1 > hours2 || (hours1 === hours2 && minutes1 > minutes2)) {
+      this.hasMissingFields = 'A hora de termino é menor que a de iníco';
+      return;
+    }
+
     if (this.eventoForm.invalid) {
       this.hasMissingFields = 'Preencha todos os campos';
       return;
