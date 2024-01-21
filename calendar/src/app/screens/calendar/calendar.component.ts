@@ -42,6 +42,7 @@ export class CalendarComponent implements OnInit {
     selectMirror: true,
     dayMaxEvents: true,
     displayEventEnd: true,
+    timeZone: 'GMT-3',
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventDrop: this.handleEventDrop.bind(this),
@@ -96,25 +97,26 @@ export class CalendarComponent implements OnInit {
   // Lidar com a seleção de datas no calendário
   handleDateSelect(selectInfo: DateSelectArg) {
     const calendarApi = selectInfo.view.calendar;
-    calendarApi.unselect(); // Limpar seleção de data]
+    calendarApi.unselect(); // Limpar seleção de data
+    //formatando endDate
+    const endDate = new Date(selectInfo.end.toISOString());
+    endDate.setDate(endDate.getDate() - 1);
+    const formattedEndDate = endDate.toISOString().slice(0, 16);
 
     // Exibir modal para criar evento
     const resutl$ = this.alertService.ShowCreateEvent({
-      start: selectInfo.start.toLocaleDateString(),
-      end: selectInfo.end.toLocaleDateString(),
+      start: selectInfo.start.toISOString().slice(0, 16),
+      end: formattedEndDate,
     });
 
     // Assinar resultados do modal
     resutl$.asObservable().subscribe(async (form: FormGroup) => {
       // Adicionar evento ao calendário ebanco de dados
+      console.log(typeof form.value.start);
       const event: IEvent = {
         description: form.value.description,
-        start: this.formatDate(selectInfo.startStr, form.value.start, false),
-        end: this.formatDate(
-          selectInfo.endStr,
-          form.value.end,
-          selectInfo.allDay
-        ),
+        start: this.formatDate(form.value.start),
+        end: this.formatDate(form.value.end),
         _userId: '',
       };
 
@@ -143,23 +145,16 @@ export class CalendarComponent implements OnInit {
   }
 
   // Formatar data e hora para o formato desejado
-  formatDate(date: string, newHour: string, isAllDay: boolean): string {
-    if (isAllDay) {
-      let [year, mouth, day] = date.split('-');
-      day = String(parseInt(day, 10) - 1);
-      const newDate = `${year}-${String(mouth).padStart(2, '0')}-${String(
-        day
-      ).padStart(2, '0')}T${newHour}:00-03:00`;
+  formatDate(date: string): string {
+    // Obter os componentes da data e hora da string fornecida
+    const [dataPart, horaPart] = date.split('T');
+    const [ano, mes, dia] = dataPart.split('-');
+    const [hora, minutos] = horaPart.split(':');
 
-      return newDate;
-    }
+    // Montar a nova data no formato desejado
+    const novaData = `${ano}-${mes}-${dia}T${hora}:${minutos}:00-03:00`;
 
-    const [year, mouth, day] = date.split('-');
-    const newDate = `${year}-${String(mouth).padStart(2, '0')}-${String(
-      day
-    ).padStart(2, '0')}T${newHour}:00-03:00`;
-
-    return newDate;
+    return novaData;
   }
 
   //Método para converter Date para string
@@ -187,16 +182,10 @@ export class CalendarComponent implements OnInit {
     const id = clickInfo.event.id;
 
     // Chama modal para edição.
-    const resutl$ = this.alertService.ShowEditEvent(
-      eventTitle,
-      this.convertToHourString(clickInfo.event.start!),
-      this.convertToHourString(clickInfo.event.end!),
-      id,
-      {
-        start: clickInfo.event.start!.toLocaleDateString(),
-        end: clickInfo.event.end!.toLocaleDateString(),
-      }
-    );
+    const resutl$ = this.alertService.ShowEditEvent(eventTitle, id, {
+      start: clickInfo.event.start!.toISOString().slice(0, 16),
+      end: clickInfo.event.end!.toISOString().slice(0, 16),
+    });
 
     // Assinar resultados do modal
     resutl$.asObservable().subscribe(async (form: FormGroup) => {
@@ -206,8 +195,8 @@ export class CalendarComponent implements OnInit {
         event = {
           id: id,
           description: form.value.description,
-          start: this.formatDate(eventStart, form.value.start, false),
-          end: this.formatDate(eventEnd, form.value.end, false),
+          start: this.formatDate(form.value.start),
+          end: this.formatDate(form.value.end),
           _userId: '',
         };
       }

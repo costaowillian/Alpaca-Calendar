@@ -18,8 +18,8 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="start" class="col-form-label">Hora de início <span>({{startDate}})</span>:</label>
-        <input type="time" class="form-control" id="start" formControlName="start" [(ngModel)]="start"
+        <label for="start" class="col-form-label">Hora de início <span>({{startDate.slice(0,10)}})</span>:</label>
+        <input type="datetime-local" class="form-control" id="start" formControlName="start" [(ngModel)]="startDate"
           [class.valid]="eventoForm.controls['start'].valid"
           [class.invalid]="eventoForm.controls['start'].invalid && eventoForm.controls['start'].touched || eventoForm.controls['start'].dirty">
         <div
@@ -30,8 +30,8 @@
         </div>
       </div>
       <div class="mb-3">
-        <label for="end" class="col-form-label">Hora de término <span>({{endDate}})</span>:</label>
-        <input type="time" class="form-control" id="end" formControlName="end" [(ngModel)]="end"
+        <label for="end" class="col-form-label">Hora de término <span>({{endDate.slice(0,10)}})</span>:</label>
+        <input type="datetime-local" class="form-control" id="end" formControlName="end" [(ngModel)]="endDate"
           [class.valid]="eventoForm.controls['end'].valid"
           [class.invalid]="eventoForm.controls['end'].invalid && eventoForm.controls['end'].touched || eventoForm.controls['end'].dirty">
         <div

@@ -33,6 +33,7 @@ export class AlertModalServiceService {
   }
 
   ShowCreateEvent(params: ICreateEvent): Subject<FormGroup> {
+    console.log(params.start);
     const bsModalRef: BsModalRef = this.modalService.show(CreateEventComponent);
     bsModalRef.content.startDate = params.start;
     bsModalRef.content.endDate = params.end;
@@ -42,15 +43,12 @@ export class AlertModalServiceService {
 
   ShowEditEvent(
     description: string,
-    start: string,
-    end: string,
     id: string,
     params: ICreateEvent
   ): Subject<FormGroup> {
+    console.log(params);
     const bsModalRef: BsModalRef = this.modalService.show(CreateEventComponent);
     bsModalRef.content.description = description;
-    bsModalRef.content.start = start;
-    bsModalRef.content.end = end;
     bsModalRef.content.id = id;
     bsModalRef.content.startDate = params.start;
     bsModalRef.content.endDate = params.end;
