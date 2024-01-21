@@ -13,6 +13,7 @@ import { apiUrl } from './helper';
 export class UserService {
   constructor() {}
 
+  // Método para criar um usuário
   async createUser(user: ICreateUserCredentials): Promise<boolean | number> {
     // Convertendo os parâmetros do usuário para o formato JSON
     const data = JSON.stringify({
@@ -60,6 +61,7 @@ export class UserService {
     }
   }
 
+  // Método para pegar as informações do usuário
   async getUserData(user: IUserCredentials): Promise<IUser | string> {
     // Convertendo os parâmetros do usuário para o formato JSON
     const data = JSON.stringify({
