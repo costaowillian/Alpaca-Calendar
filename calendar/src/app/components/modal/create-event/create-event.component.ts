@@ -22,10 +22,10 @@ export class CreateEventComponent {
   // Mensagem de erro, formulário do evento e resultado da criação
   hasError: string;
   hasMissingFields: string;
-  toEdit: boolean;
 
   createResult!: Subject<FormGroup>;
   deleteResult!: Subject<boolean>;
+  
   //formulário de criação de envento
   eventoForm = this.fb.group({
     description: ['', [Validators.required]],
@@ -43,20 +43,11 @@ export class CreateEventComponent {
   ) {
     this.hasError = '';
     this.hasMissingFields = '';
-    this.toEdit = false;
   }
 
   ngOnInit() {
     this.createResult = new Subject();
     this.deleteResult = new Subject();
-    this.onEdit();
-  }
-
-  //Método para verificar se é edição
-  onEdit() {
-    if (this.eventoForm.valid) {
-      this.toEdit = true;
-    }
   }
 
   // Método chamado quando o modal é fechado sem confirmação
