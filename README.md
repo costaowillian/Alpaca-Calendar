@@ -1,3 +1,7 @@
+# Alpaca Calendar
+
+O projeto consiste em um aplicativo web de calendário que possibilita a marcação de eventos específicos em datas e horários específicos.
+
 ## Pré-requisitos
 
 Certifique-se de ter o seguinte instalado antes de começar:
