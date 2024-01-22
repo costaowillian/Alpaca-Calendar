@@ -57,22 +57,56 @@ export class CreateEventComponent {
     this.bsModalRef.hide();
   }
 
-  // Método chamado quando o modal é confirmado
-  onConfirm() {
+  //Método que faz a validação das datas
+  isValidDate() {
     const start = this.eventoForm.value.start!;
     const end = this.eventoForm.value.end!;
-    const [hours1, minutes1] = start.split(':').map(Number);
-    const [hours2, minutes2] = end.split(':').map(Number);
+    const startDate = new Date(start);
+    const endDate = new Date(end);
 
-    if (hours1 > hours2 || (hours1 === hours2 && minutes1 > minutes2)) {
-      this.hasMissingFields = 'A hora de termino é menor que a de iníco';
+    // Verifica se a data de término é menor que a de início
+    if (endDate < startDate) {
+      this.hasMissingFields = 'A data de término é anterior à data de início';
+      return false;
+    }
+
+    // Verifica se a data de término é igual à de início e a hora de término é menor que a de início
+    if (
+      endDate.getTime() === startDate.getTime() &&
+      endDate.getHours() < startDate.getHours()
+    ) {
+      this.hasMissingFields =
+        'A hora de término é menor que a de início no mesmo dia';
+      return false;
+    }
+
+    // Verifica se a data de término é igual à de início, a hora de término é igual e os minutos de término são menores
+    if (
+      endDate.getTime() === startDate.getTime() &&
+      endDate.getHours() === startDate.getHours() &&
+      endDate.getMinutes() < startDate.getMinutes()
+    ) {
+      this.hasMissingFields =
+        'Os minutos de término são menores que os minutos de início no mesmo dia';
+      return false;
+    }
+
+    return true;
+  }
+
+  // Método chamado quando o modal é confirmado
+  onConfirm() {
+    //Verifica as datas
+    if (!this.isValidDate()) {
       return;
     }
 
+    //verifica se o formulário é valido
     if (this.eventoForm.invalid) {
       this.hasMissingFields = 'Preencha todos os campos';
       return;
     }
+
     this.crateAndClose();
   }
 
