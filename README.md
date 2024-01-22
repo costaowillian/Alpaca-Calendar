@@ -1,7 +1,3 @@
-# CashQuest API
-
-A CashQuest API é a infraestrutura por trás de um aplicativo mobile de organização financeira gamificada. Foi desenvolvido como parte do trabalho de conclusão do Curo de Desenvolvimento de sistemas.
-
 ## Pré-requisitos
 
 Certifique-se de ter o seguinte instalado antes de começar:
