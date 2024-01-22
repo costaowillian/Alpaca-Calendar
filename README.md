@@ -59,30 +59,11 @@ Certifique-se de executar `yarn install` antes de usar esses scripts para garant
 No diretório do projeto Front-End, você pode executar os seguintes scripts:
 
 - `ng server`: Inicia o servidor da aplicação web utilizando o angular.
-- `ng`: Compila o projeto da aplicação web.
+- `ng build`: Compila o projeto da aplicação web.
 
 Certifique-se de executar `npm install` antes de usar esses scripts para garantir que todas as dependências sejam instaladas corretamente.
 
 Lembre-se de ajustar os scripts conforme necessário para atender às suas necessidades específicas de desenvolvimento e produção.
-
-## Estrutura do Projeto
-
-|-- alpaca.api/
-  |-- src
-    |-- controllers
-    |-- database
-    |-- interfaces
-    |-- middleware
-    |-- models
-    |-- routes
-|-- calendar/
-  |-- app
-    |-- src
-    |-- components
-    |-- guard
-    |-- models
-    |-- screens
-    |-- services
 
 
 ## Tecnologias Utilizadas
